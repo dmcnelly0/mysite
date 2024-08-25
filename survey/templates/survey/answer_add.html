@@ -1,0 +1,27 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head><title>Take Survey</title></head>
+<style>
+body {
+  background-image: url('https://ec2-3-141-170-59.us-east-2.compute.amazonaws.com/mainecoast.jpg'); 
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+</style>
+<center><font color=000030>
+<h1>Survey
+<form action="/survey/answercls/" method="post">
+    {% csrf_token %}
+    <table style=color:000030>
+    {% for f in form %}
+    <tr>
+       <td align="right">{{ f.label_tag }}</td><td align="left">{{ f }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    <br>
+    <input type="submit" name="ans" value="Submit Answers">
+</form>
+</body>
+</html>

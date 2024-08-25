@@ -1,0 +1,17 @@
+<html>
+<head><title>Answers</title></head>
+<font face="Tahoma" color=0020c0>
+<center><h3>Survey Answers</h3></center>
+{% if answer %}
+   {% for a in answer %}
+      {{ a }}
+      <br>
+   {% endfor %}
+{% else %}
+    <p>No answers are available.</p>
+{% endif %}
+</font>
+</html>
+
+
+
