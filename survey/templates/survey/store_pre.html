@@ -1,0 +1,14 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=0.75">
+<head><title>Choose</title></head>
+<body>
+<font face="Tahoma" color=0020c0>
+<center><h2>Login</h2>
+<blockquote>
+<form action="/survey/store/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" name="store" value="Submit">
+</center>
+</body>
+</html>

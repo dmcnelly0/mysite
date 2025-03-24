@@ -1,7 +1,8 @@
 from django import forms
+from django.db import connections
 
 class AnswerForm(forms.Form):
-    RATINGS5 = [ (None, ""),
+    RATINGS5 = [ (0, "<Give rating>"),
                  (5, "Very good"),
                  (4, "Good"),
                  (3, "Okay"),
@@ -14,3 +15,24 @@ class AnswerForm(forms.Form):
     #pastor_rating = forms.ChoiceField(label = "What did you think of the pastor", choices = RATINGS5)
     comments = forms.CharField(label = "Comments", max_length = 500
         , widget = forms.Textarea(), required=False )
+
+class AddChoiceForm(forms.Form):
+    question = forms.ChoiceField(label = "Pick question") #, choices = getQuestions() )
+    name = forms.CharField(label = "Choice Name", max_length = 200)
+
+class ChoiceForm(forms.Form):
+    name = forms.CharField(label = "Your Name", max_length = 80)
+    #CH = [("1", "dummy value 1"), ("2", "dummy value 2")]
+    choice_ = forms.ChoiceField(label = "Pick", widget = forms.RadioSelect) #, choices = CH )
+
+class AuthForm(forms.Form):
+    uname = forms.CharField(label = "Username", max_length = 20)
+    pword = forms.CharField(label = "Password", max_length = 20
+        , widget = forms.PasswordInput )
+
+class FileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = forms.FileField() #label = "File Name", max_length=30)
+
+#label = "Title", 
+#upload_to="survey/"

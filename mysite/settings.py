@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+try:
+   from . import utl
+except Exception as x:
+   print("Error:", x)
+   #exit()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +33,8 @@ SECRET_KEY = 'django-insecure--w%@7afz^s&qs0kg#ax89-!lj-nb7%x43+lcv(i@(8at6uqfm1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CSRF_TRUSTED_ORIGINS = [ "https://ec2-3-141-170-59.us-east-2.compute.amazonaws.com" ]
+
 #SECURE_CONTENT_TYPE_NOSNIFF = True
 #SECURE_BROWSER_XSS_FILTER = True
 #SESSION_COOKIE_SECURE = True
@@ -43,6 +50,7 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'survey.apps.SurveyConfig',
+    #'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -86,6 +94,17 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+#tok = ""
+try:
+   #a = 1 / 0
+   tok = utl.getTok()
+except Exception as x:
+   #raise Exception("Error:", x)
+   fl = open("Err.txt", "w")
+   fl.write("Error: " + str(x))
+   fl.close()
+   exit()
+
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
@@ -93,7 +112,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'Nep+une8',
+        'PASSWORD': tok,
         'HOST': 'db-django1.czoou22skoun.us-east-2.rds.amazonaws.com',
         'PORT': '5432',
     }

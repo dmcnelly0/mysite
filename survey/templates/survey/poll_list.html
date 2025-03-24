@@ -1,0 +1,24 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=0.75">
+<head><title>Polls</title></head>>
+<body>
+<font face="Tahoma" color=0020c0>
+<center><h1>Polls</h1>
+<button type="button" onclick="unHide()">See publish dates</button>
+{% if quest %}
+    {% for q in quest %}
+        <br><a href="{% url 'index' %}{{ q.id }}/choice/">{{ q.question_text }}</a>
+            <div hidden name="pubDate">&nbsp&nbsp&nbsp{{ q.pub_date }}</div>
+    {% endfor %}
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+</font>
+</body>
+<script>
+function unHide() {
+   let pubCol = document.getElementsByName("pubDate");
+   for ( let i = 0 ; i < pubCol.length ; i++ ) { pubCol[i].style.display = "inline"; }
+}
+</script>
+</html>
