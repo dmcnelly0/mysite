@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views, fil
 
 urlpatterns = [
@@ -13,4 +15,4 @@ urlpatterns = [
     #path("prestore/", views.authstore, name="authflSs"),
     path("store/", fil.flSs.as_view(), name="flSs"),
     path("upld/", views.uploadFile, name="uploadFile"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
