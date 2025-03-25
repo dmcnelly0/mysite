@@ -20,9 +20,9 @@ except Exception as x:
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MEDIA_ROOT = '/home/ec2-user/mysite/'
+#MEDIA_ROOT = '/home/ec2-user/mysite/'
 
-MEDIA_URL = '/mysite/'
+#MEDIA_URL = '/mysite/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
