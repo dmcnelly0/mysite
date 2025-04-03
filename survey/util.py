@@ -60,7 +60,7 @@ def runFlSsRpt():
     FIRSTCOL = 0
     FIFTHCOL = 4
     head = "<html><body><h2><center>Store</center>"
-    subprocess.run(["./store.sh"], shell=True)
+    sub = subprocess.run(["./store.sh"], shell=True)
     print("Check point:", "50.0", "Shell script status:", sub)
     fl = open("df.out", "r")
     lin = []
