@@ -15,4 +15,4 @@ urlpatterns = [
     #path("prestore/", views.authstore, name="authflSs"),
     path("store/", fil.flSs.as_view(), name="flSs"),
     path("upld/", views.uploadFile, name="uploadFile"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
