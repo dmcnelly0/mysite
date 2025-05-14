@@ -32,7 +32,7 @@ def getQuestionText(question_id):
 
 def getQuestions():
     with getConn().cursor() as cur:
-        q = "select id, question_text from survey_question order by question_text"
+        q = "select id, question_text from survey_question where demo_record = false order by question_text"
         cur.execute(q)
         dat = cur.fetchall()
         # Add hint add head of list.
@@ -41,8 +41,7 @@ def getQuestions():
 
 def getChoices(quest_id):
     with getConn().cursor() as cur:
-        q = "select id, choice_text from survey_choice where question_id = " + str(quest_id)
-        #q = "select q.question_text, c.id, c.choice_text from survey_choice c join survey_question q on c.question_id = q.id where c.question_id = " + str(quest_id)
+        q = "select id, choice_text from survey_choice where demo_record = false and question_id = " + str(quest_id)
         cur.execute(q)
         dat = cur.fetchall()
     return dat
@@ -51,6 +50,7 @@ def getResponses():
     with getConn().cursor() as cur:
         q = "select r.name, q.question_text, c.choice_text, to_char(r.changedatetime, 'YYYY-fmMM-fmDD HH:MIam') change_time, r.demo_record"
         q += " from survey_choice c right join survey_question q on c.question_id = q.id left join survey_response r on c.id = r.choice_id"
+        q += " where r.demo_record = false"
         q += " order by r.changedatetime desc, c.changedatetime desc"
         cur.execute(q)
         dat = cur.fetchall()
