@@ -28,6 +28,10 @@ def index(req):
     tmplt = loader.get_template("survey/index.html")
     return HttpResponse(tmplt.render())
 
+# def admin(req):
+   # tmplt = loader.get_template("survey/admin.html")
+   # return HttpResponse(tmplt.render())
+
 class AddAnswer(View):
     def get(self, req):
         form = AnswerForm()

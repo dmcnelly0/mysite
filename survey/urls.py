@@ -1,10 +1,11 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from . import views, fil
+from . import views, adm_vw, fil
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("adm/", adm_vw.LogIn.as_view(), name="AdminView"),
     path("answercls/", views.AddAnswer.as_view(), name="AddAnswer"),
     path("list/", views.list, name="listAnswers"),
     path("poll/", views.pollHome, name="pollHome"),

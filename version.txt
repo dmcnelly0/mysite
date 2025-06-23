@@ -1,1 +1,1 @@
-Survey version 0.5.1
+Survey version 0.5.2
