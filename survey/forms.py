@@ -28,7 +28,7 @@ class ChoiceForm(forms.Form):
 class AuthForm(forms.Form):
     uname = forms.CharField(label = "Username", max_length = 20)
     pword = forms.CharField(label = "Password", max_length = 20
-        , widget = forms.PasswordInput )
+        , widget = forms.PasswordInput(attrs = { 'autocomplete': 'new-password' } ) )
 
 class FileForm(forms.Form):
     title = forms.CharField(max_length=50)
