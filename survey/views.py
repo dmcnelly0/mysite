@@ -7,9 +7,9 @@ from django.views import View
 from django.utils import timezone
 #import django.contrib.auth.models.User
 
-from .models import Answer, Question, Choice, Response
-from .forms import AnswerForm, ChoiceForm, FileForm, AddChoiceForm #ChoiceFormAnlz1
-from .util import getChoices, getQuestionText, getQuestions, getResponses
+from .models import Answer, Question, Response
+from .forms import AnswerForm, ChoiceForm, FileForm #, AddChoiceForm ChoiceFormAnlz1
+from .util import getChoices, getQuestionText, getResponses
 #from .util0 import getQuestions
 #import survey.fil #import flSs
 
@@ -81,28 +81,28 @@ def pollHome(req):
     #return HttpResponse("Welcome")
     #return HttpResponse("hear this " + str(quest))# + " " + os.getcwd())
 
-def addChoice(req):
-    if req.method == "POST":
-        pst = req.POST
-        form = AddChoiceForm(pst)
-        form.fields["question"].choices = getQuestions()
-        if form.is_valid():
-            quest_id = pst.get("question")
+# def addChoice(req):
+    # if req.method == "POST":
+        # pst = req.POST
+        # form = AddChoiceForm(pst)
+        # form.fields["question"].choices = getQuestions()
+        # if form.is_valid():
+            # quest_id = pst.get("question")
             #print("quest_id type:", type(quest_id))
-            nm = pst.get("name")
-            c = Choice(question_id = int(quest_id), choice_text = nm )
-            c.save()
-        else:
-           print("Not a valid form.")
-        return HttpResponseRedirect("/survey/addchoice/")
+            # nm = pst.get("name")
+            # c = Choice(question_id = int(quest_id), choice_text = nm )
+            # c.save()
+        # else:
+           # print("Not a valid form.")
+        # return HttpResponseRedirect("/survey/addchoice/")
 
-    else:
-        form = AddChoiceForm()
-        form.fields["question"].choices = getQuestions()
-        tmplt = loader.get_template("survey/add_choice.html")
-        ctx = { "form": form }
+    # else:
+        # form = AddChoiceForm()
+        # form.fields["question"].choices = getQuestions()
+        # tmplt = loader.get_template("survey/add_choice.html")
+        # ctx = { "form": form }
 
-    return HttpResponse(tmplt.render(ctx, req))
+    # return HttpResponse(tmplt.render(ctx, req))
 
 def choice(req, question_id):
     print("Check point:", "1.3", "req:", type(req))

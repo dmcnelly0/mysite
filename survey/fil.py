@@ -4,10 +4,9 @@ from django.contrib.auth.decorators import login_required
 
 from .util import runFlSsRpt
 
-class flSs(View):
-    @login_required
-    def get(self, req, unm):
-        print("Check point:", "7", unm)
-        doc = runFlSsRpt()
+@login_required
+def flSs(req, unm):
+    print("Check point:", "7", unm)
+    doc = runFlSsRpt()
 
-        return HttpResponse(doc)
+    return HttpResponse(doc)

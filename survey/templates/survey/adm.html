@@ -2,20 +2,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head><title>Administrator</title></head>
 {% csrf_token %}
-<body onload="hst()"><h3><center>
+<body><h3><center>
    <!--UNDER CONSTRUCTION-->
    <a href="{% url 'index' %}{{ unm }}/store/">Store</a>
    <br>
-   <!--<input type="button" onclick="hst()">-->
-<script>
-function hst() {
-   //document.write(window.history.back().toString());
-   document.write("Previous: " + document.referrer);
-   //if ( document.referrer  ) {
-   //}
-   //document.write(document.referrer);
-   //console.log("Previous: " + document.referrer + "]");
-}
-</script>
+   <a href="{% url 'index' %}addchoice/">Add Question Choices</a>
 </body>
 </html>

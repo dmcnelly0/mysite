@@ -1,9 +1,13 @@
 from django.template import loader
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 
-from .forms import AuthForm
+from .models import Choice
+from .forms import AuthForm, AddChoiceForm
+from .util import getQuestions
 
 class LogIn(View):
     def get(self, req):
@@ -20,6 +24,7 @@ class LogIn(View):
             unm = pst.get("uname")
             pw = pst.get("pword")
             u = authenticate(req, username = unm, password = pw)
+            ctx = { "unm": unm }
             #except Exception as x:
             #    print("Error:", x, "Check point:", ckpt)
             if u is not None:
@@ -31,4 +36,31 @@ class LogIn(View):
 
         print("Check point:", "6.9", str(u))
         tmplt = loader.get_template("survey/adm.html")
-        return HttpResponse(tmplt.render())
+        return HttpResponse(tmplt.render(ctx, req))
+
+#class AddChoice(View):
+class AddChoice(LoginRequiredMixin, TemplateView):
+    #@login_required
+    def get(self, req):
+        form = AddChoiceForm()
+        form.fields["question"].choices = getQuestions()
+        tmplt = loader.get_template("survey/add_choice.html")
+        ctx = { "form": form }
+
+        return HttpResponse(tmplt.render(ctx, req))
+
+    #@login_required
+    def post(self, req):
+        pst = req.POST
+        form = AddChoiceForm(pst)
+        form.fields["question"].choices = getQuestions()
+        if form.is_valid():
+            quest_id = pst.get("question")
+            #print("quest_id type:", type(quest_id))
+            nm = pst.get("name")
+            c = Choice(question_id = int(quest_id), choice_text = nm )
+            c.save()
+        else:
+            print("Not a valid form.")
+
+        return HttpResponseRedirect("/survey/addchoice/")
