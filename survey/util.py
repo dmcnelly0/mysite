@@ -1,5 +1,7 @@
 import re, subprocess
 from cryptography.fernet import Fernet
+import smtplib
+from email.message import EmailMessage
 from django.db import connections
 from .forms import AnswerForm
 
@@ -84,3 +86,21 @@ def runFlSsRpt():
 
     return head + rpt + foot
  
+# def runLogRpt():
+    # sub = subprocess.run(["./ngxlog.sh"], shell=True)
+
+def runLogRpt():
+   ckpt = "1"
+   try:
+      msg = EmailMessage()
+      msg['Subject'] = 'Project Test Email'
+      msg['From'] = 'dsmcnelly@gmail.com'
+      msg['To'] = 'trulyrural@aol.com'
+      msg.set_content('Hi Chris, This is a test email sent from Python.')
+      ckpt = "2"
+      with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp: # Replace with your SMTP server and port
+          # uwrr fsgg fcwn mxch
+          smtp.login('dsmcnelly@gmail.com', 'uwrrfsggfcwnmxch') # Replace with your credentials
+          smtp.send_message(msg)
+   except Exception as x:
+      print("Error:", x, "Check point:", ckpt)

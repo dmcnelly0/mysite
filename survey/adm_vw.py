@@ -2,12 +2,12 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Choice
 from .forms import AuthForm, AddChoiceForm
-from .util import getQuestions
+from .util import getQuestions, runLogRpt()
 
 class LogIn(View):
     def get(self, req):
@@ -40,6 +40,7 @@ class LogIn(View):
 
 #class AddChoice(View):
 class AddChoice(LoginRequiredMixin, TemplateView):
+    raise_exception = True
     #@login_required
     def get(self, req):
         form = AddChoiceForm()
@@ -64,3 +65,9 @@ class AddChoice(LoginRequiredMixin, TemplateView):
             print("Not a valid form.")
 
         return HttpResponseRedirect("/survey/addchoice/")
+
+# def gotLog(req):
+    #PENDING
+    # runLogRpt()
+    # fl = open("ngxlog.txt", "r")
+

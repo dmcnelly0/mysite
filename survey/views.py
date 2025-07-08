@@ -175,3 +175,16 @@ def respRpt(req):
     ctx = { "responses": resp, }
 
     return HttpResponse(tmplt.render(ctx))
+
+
+#########################################################################################
+
+# Project Name: "Picker"
+
+# Project Description: An Application for Iphone and Android and other platforms that
+# utilizes a AI driven Large Language Model scrap based on a customer driven fillable
+# taxonomy that allows the customer to receive an alert when a particular item is placed
+# for sale on the web across multiple websites which serve as data sources like: Craigslist,
+# Bring a Trailer, ebay, Facebook marketplace etc.
+
+
