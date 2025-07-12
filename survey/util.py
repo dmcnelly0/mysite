@@ -71,7 +71,7 @@ def runFlSsRpt():
     firstRow = True
     for ln in fl:
         if firstRow == False:
-            col = re.split("\s+", ln)
+            col = re.split("\\s+", ln)
             ss = col[FIRSTCOL]
             u = col[FIFTHCOL]
             rpt += ss + "&emsp;" + u + "<br>"
@@ -89,7 +89,13 @@ def runFlSsRpt():
 # def runLogRpt():
     # sub = subprocess.run(["./ngxlog.sh"], shell=True)
 
-def runLogRpt():
+#########################################################################################
+# Project Name: "Picker"
+
+import requests
+from rapidfuzz import fuzz
+
+def sendEmail():
    ckpt = "1"
    try:
       msg = EmailMessage()
@@ -104,3 +110,28 @@ def runLogRpt():
           smtp.send_message(msg)
    except Exception as x:
       print("Error:", x, "Check point:", ckpt)
+
+def flagIfItem(item):
+   #item = "greengobbler"
+   #url = "https://www.amazon.com/s?k=" + item
+   url = "https://www.ebay.com/sch/i.html?_nkw=" + item
+   print("URL:", url)
+   f = open("Ebay.txt", "w")
+   req = requests.get(url)
+   i = 0
+   for ln in req:
+      #i += 1
+      #print(i)
+      row = str(ln)
+      #f.write(row)
+      wlist = row.split()
+      f.write(str(wlist) + "\n")
+      for w in wlist:
+         if fuzz.token_sort_ratio(w.lower(), item) == 100:
+            i += 1
+            print(w)
+
+   print("Hits:", i)
+   f.close()
+
+   #return url
