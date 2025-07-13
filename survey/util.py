@@ -135,3 +135,36 @@ def flagIfItem(item):
    f.close()
 
    #return url
+
+# Overloaded to give option to create text file of web page or read text file and scrape.
+def flagIfItem(item, wrMode):
+   hits = 0
+   if wrMode:
+      #item = "greengobbler"
+      #url = "https://www.amazon.com/s?k=" + item
+      url = "https://www.ebay.com/sch/i.html?_nkw=" + item
+      print("URL:", url)
+      f = open("Ebay.txt", "w")
+      req = requests.get(url)
+      i = 0
+      for ln in req:
+         f.write(str(ln) + "\n")
+         #i += 1
+         #print(i)
+      f.close()
+      #return None
+   else:
+      fRead = open("Ebay.txt", "r")
+      for ln in fRead:
+         #row = str(ln)
+         #f.write(row)
+         wlist = ln.split()
+         print(wlist)
+         #f.write(str(wlist) + "\n")
+         for w in wlist:
+            if fuzz.token_sort_ratio(w.lower(), item.lower()) == 100:
+               hits += 1
+               print(w)
+      fRead.close()
+      print("Hits:", hits)
+
