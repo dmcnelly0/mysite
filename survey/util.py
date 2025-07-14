@@ -141,11 +141,12 @@ def flagIfItem(item, wrMode):
    hits = 0
    if wrMode:
       #item = "greengobbler"
-      #url = "https://www.amazon.com/s?k=" + item
-      url = "https://www.ebay.com/sch/i.html?_nkw=" + item
-      print("URL:", url)
-      f = open("Ebay.txt", "w")
-      req = requests.get(url)
+      #URL = "https://www.amazon.com/s?k=" + item
+      #URL = "https://www.ebay.com/sch/i.html?_nkw=" + item
+      URL = 'https://washingtondc.craigslist.org/search/sss?query=' + item
+      print("URL:", URL)
+      f = open("Craigs.txt", "w")
+      req = requests.get(URL)
       i = 0
       for ln in req:
          f.write(str(ln) + "\n")
