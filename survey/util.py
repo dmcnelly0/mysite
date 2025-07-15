@@ -155,7 +155,7 @@ def flagIfItem(item, wrMode):
       f.close()
       #return None
    else:
-      fRead = open("Ebay.txt", "r")
+      fRead = open("Craigs.txt", "r")
       for ln in fRead:
          #row = str(ln)
          #f.write(row)
@@ -169,3 +169,18 @@ def flagIfItem(item, wrMode):
       fRead.close()
       print("Hits:", hits)
 
+def getPosList(tx):
+   posList = [ ]
+   i = 0
+   posList.insert(i, tx.find(" "))
+   while True:  #posList[i] > -1:
+      print(i, posList[i])
+      curr = i
+      i += 1
+      # find next position starting from current position
+      posList.insert(i, tx.find(" ", posList[curr] + 1))
+      # exit when no more positions are found
+      if posList[i] == -1:
+         break
+
+   return posList
