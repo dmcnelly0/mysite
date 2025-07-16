@@ -86,8 +86,9 @@ def runFlSsRpt():
 
     return head + rpt + foot
  
-# def runLogRpt():
-    # sub = subprocess.run(["./ngxlog.sh"], shell=True)
+def runLogRpt():
+   print("PENDING")
+   # sub = subprocess.run(["./ngxlog.sh"], shell=True)
 
 #########################################################################################
 # Project Name: "Picker"
@@ -155,29 +156,48 @@ def flagIfItem(item, wrMode):
       f.close()
       #return None
    else:
-      fRead = open("Craigs.txt", "r")
+      fRead = open("Sample1.txt", "r")
+      # create new string not having extra spaces.
+      itemClean = re.sub("\\s+", " ", item)
+      lenItem = len(itemClean)
+      prev = ""
       for ln in fRead:
-         #row = str(ln)
-         #f.write(row)
-         wlist = ln.split()
-         print(wlist)
-         #f.write(str(wlist) + "\n")
-         for w in wlist:
-            if fuzz.token_sort_ratio(w.lower(), item.lower()) == 100:
+         # create new string not having extra spaces.
+         lineClean = re.sub("\\s+", " ", ln)
+         twoLn = prev + lineClean
+         print(twoLn)
+         # create list of positions of the spacebars
+         pList = getPosList(twoLn)
+         #i = 0
+         #while True:
+         # loop through positions excluding the last, which value is a -1
+         for i in range(0, len(pList) - 1):
+            if pList[i] == 0:
+               start = pList[i]
+            else:
+               start = pList[i] + 1
+            subLn = twoLn[start : start + lenItem]
+            print(subLn)
+            if fuzz.token_sort_ratio(subLn.lower(), itemClean.lower()) == 100:
                hits += 1
-               print(w)
+               print(subLn, ".....................................")
+            #i += 1
+         prev = lineClean[100:].replace("\n", " ")
       fRead.close()
       print("Hits:", hits)
 
 def getPosList(tx):
    posList = [ ]
    i = 0
-   posList.insert(i, tx.find(" "))
+   if tx[0 : 1] != " ":
+      posList.insert(i, 0)
+   else:
+      posList.insert(i, tx.find(" "))
    while True:  #posList[i] > -1:
       print(i, posList[i])
       curr = i
       i += 1
-      # find next position starting from current position
+      # find next position starting after current position (spacebar)
       posList.insert(i, tx.find(" ", posList[curr] + 1))
       # exit when no more positions are found
       if posList[i] == -1:
