@@ -139,14 +139,15 @@ def flagIfItem(item):
 
 # Overloaded to give option to create text file of web page or read text file and scrape.
 def flagIfItem(item, wrMode):
+   filenm = "Ebay.txt"
    hits = 0
    if wrMode:
       #item = "greengobbler"
       #URL = "https://www.amazon.com/s?k=" + item
-      #URL = "https://www.ebay.com/sch/i.html?_nkw=" + item
-      URL = 'https://washingtondc.craigslist.org/search/sss?query=' + item
+      URL = "https://www.ebay.com/sch/i.html?_nkw=" + item
+      #URL = 'https://washingtondc.craigslist.org/search/sss?query=' + item
       print("URL:", URL)
-      f = open("Craigs.txt", "w")
+      f = open(filenm, "w")
       req = requests.get(URL)
       i = 0
       for ln in req:
@@ -156,16 +157,18 @@ def flagIfItem(item, wrMode):
       f.close()
       #return None
    else:
-      fRead = open("Sample1.txt", "r")
+      fRead = open(filenm, "r")
       # create new string not having extra spaces.
       itemClean = re.sub("\\s+", " ", item)
       lenItem = len(itemClean)
       prev = ""
+      lnNum = 0
       for ln in fRead:
+         lnNum += 1
          # create new string not having extra spaces.
          lineClean = re.sub("\\s+", " ", ln)
          twoLn = prev + lineClean
-         print(twoLn)
+         #print(twoLn)
          # create list of positions of the spacebars
          pList = getPosList(twoLn)
          #i = 0
@@ -177,14 +180,37 @@ def flagIfItem(item, wrMode):
             else:
                start = pList[i] + 1
             subLn = twoLn[start : start + lenItem]
-            print(subLn)
+            #print(subLn)
             if fuzz.token_sort_ratio(subLn.lower(), itemClean.lower()) == 100:
                hits += 1
-               print(subLn, ".....................................")
+               print(lnNum, twoLn)
             #i += 1
          prev = lineClean[100:].replace("\n", " ")
       fRead.close()
       print("Hits:", hits)
+
+def flagIfItemWide(item):
+   filenm = "Ebay.txt"
+   fRead = open(filenm, "r")
+   # create new string not having extra spaces.
+   itemClean = re.sub("\\s+", " ", item)
+   hits = 0
+   prev = ""
+   lnNum = 0
+   for ln in fRead:
+      lnNum += 1
+      # create new string not having extra spaces.
+      lineClean = re.sub("\\s+", " ", ln)
+      # concatinate previous line with line.
+      twoLn = prev + lineClean
+      #print(twoLn)
+      if fuzz.token_set_ratio(twoLn.lower(), itemClean.lower()) == 100:
+         hits += 1
+         print(lnNum, twoLn)
+      prev = lineClean
+   fRead.close()
+   print("Hits:", hits)
+
 
 def getPosList(tx):
    posList = [ ]
@@ -194,7 +220,7 @@ def getPosList(tx):
    else:
       posList.insert(i, tx.find(" "))
    while True:  #posList[i] > -1:
-      print(i, posList[i])
+      #print(i, posList[i])
       curr = i
       i += 1
       # find next position starting after current position (spacebar)
