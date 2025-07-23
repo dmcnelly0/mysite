@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Choice
 from .forms import AuthForm, AddChoiceForm
-from .util import getQuestions, runLogRpt()
+from .util import getQuestions, runLogRpt
 
 class LogIn(View):
     def get(self, req):

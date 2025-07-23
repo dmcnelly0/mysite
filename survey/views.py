@@ -186,5 +186,3 @@ def respRpt(req):
 # taxonomy that allows the customer to receive an alert when a particular item is placed
 # for sale on the web across multiple websites which serve as data sources like: Craigslist,
 # Bring a Trailer, ebay, Facebook marketplace etc.
-
-

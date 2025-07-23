@@ -139,7 +139,7 @@ def flagIfItem(item):
 
 # Overloaded to give option to create text file of web page or read text file and scrape.
 def flagIfItem(item, wrMode):
-   filenm = "Ebay.txt"
+   filenm = "ebay.txt"
    hits = 0
    if wrMode:
       #item = "greengobbler"
@@ -190,27 +190,50 @@ def flagIfItem(item, wrMode):
       print("Hits:", hits)
 
 def flagIfItemWide(item):
-   filenm = "Ebay.txt"
+   filenm = "ebay.txt"
    fRead = open(filenm, "r")
    # create new string not having extra spaces.
-   itemClean = re.sub("\\s+", " ", item)
+   #itemClean = re.sub("\\s+", " ", item)
    hits = 0
    prev = ""
    lnNum = 0
    for ln in fRead:
       lnNum += 1
       # create new string not having extra spaces.
-      lineClean = re.sub("\\s+", " ", ln)
-      # concatinate previous line with line.
-      twoLn = prev + lineClean
+      #lineClean = re.sub("\\s+", " ", ln)
+      # concatinate previous line with current line.
+      twoLn = prev + ln
       #print(twoLn)
-      if fuzz.token_set_ratio(twoLn.lower(), itemClean.lower()) == 100:
+      #if fuzz.token_set_ratio(twoLn.lower(), item.lower()) == 100:
+      if hasAllWords(item, twoLn):
          hits += 1
          print(lnNum, twoLn)
-      prev = lineClean
+      prev = ln
    fRead.close()
    print("Hits:", hits)
 
+def hasAllWords(item, tx):
+   wordList = item.split()
+   #cnt = 0
+   i = 0
+   newTx = tx
+   for word in wordList:
+      if tx.lower().find(word.lower()) == -1:
+         return False
+      print(word)
+
+   return True
+
+def padSpace(item, tx):
+   wordList = item.split()
+   newList = [ ]
+   i = 0
+   newTx = tx
+   for word in wordList:
+      #newList.insert(i, " " + word + " ")
+      newTx = newTx.replace(word, " " + word + " ")
+      i += 1
+   return newTx
 
 def getPosList(tx):
    posList = [ ]
