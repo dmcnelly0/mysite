@@ -93,6 +93,11 @@ def runLogRpt():
 #########################################################################################
 # Project Name: "Picker"
 
+# class InvalidChoice(Exception):
+   # def __init__(self, message="Invalid choice."):
+       # self.message = message
+       # super().__init__(self.message)
+
 import requests
 from rapidfuzz import fuzz
 
@@ -118,9 +123,9 @@ def flagIfItem(item):
    url = "https://www.ebay.com/sch/i.html?_nkw=" + item
    print("URL:", url)
    f = open("Ebay.txt", "w")
-   req = requests.get(url)
+   res = requests.get(url)
    i = 0
-   for ln in req:
+   for ln in res:
       #i += 1
       #print(i)
       row = str(ln)
@@ -138,24 +143,33 @@ def flagIfItem(item):
    #return url
 
 # Overloaded to give option to create text file of web page or read text file and scrape.
-def flagIfItem(item, wrMode):
-   filenm = "ebay.txt"
+def flagIfItem(item, wrMode, webSite):
+   noMatchCnt = -1
+   filenm = ""
+   #url = ""
    hits = 0
    if wrMode:
-      #item = "greengobbler"
-      #URL = "https://www.amazon.com/s?k=" + item
-      URL = "https://www.ebay.com/sch/i.html?_nkw=" + item
-      #URL = 'https://washingtondc.craigslist.org/search/sss?query=' + item
-      print("URL:", URL)
+      if webSite == "A":
+         filenm = "amazon.txt"
+         url = "https://www.amazon.com/s?k=" + item
+      elif webSite == "E":
+         filenm = "ebay.txt"
+         url = "https://www.ebay.com/sch/i.html?_nkw=" + item
+      elif webSite == "C":
+         filenm = "craigs.txt"
+         url = "https://washingtondc.craigslist.org/search/sss?query=" + item
+      else:
+         raise Exception("Invalid choice for website.")
+      print("URL:", url)
+      res = requests.get(url)
+      noMatchCnt = res.text.count("No exact matches found")
       f = open(filenm, "w")
-      req = requests.get(URL)
       i = 0
-      for ln in req:
+      for ln in res.iter_lines():
          f.write(str(ln) + "\n")
          #i += 1
          #print(i)
       f.close()
-      #return None
    else:
       fRead = open(filenm, "r")
       # create new string not having extra spaces.
@@ -189,8 +203,18 @@ def flagIfItem(item, wrMode):
       fRead.close()
       print("Hits:", hits)
 
-def flagIfItemWide(item):
-   filenm = "ebay.txt"
+   return noMatchCnt
+
+def flagIfItemWide(item, webSite):
+   filenm = ""
+   if webSite == "A":
+      filenm = "amazon.txt"
+   elif webSite == "E":
+      filenm = "ebay.txt"
+   elif webSite == "C":
+      filenm = "craigs.txt"
+   else:
+      raise Exception("Invalid website.")
    fRead = open(filenm, "r")
    # create new string not having extra spaces.
    #itemClean = re.sub("\\s+", " ", item)
@@ -202,13 +226,12 @@ def flagIfItemWide(item):
       # create new string not having extra spaces.
       #lineClean = re.sub("\\s+", " ", ln)
       # concatinate previous line with current line.
-      twoLn = prev + ln
-      #print(twoLn)
+      #twoLn = prev + ln
       #if fuzz.token_set_ratio(twoLn.lower(), item.lower()) == 100:
-      if hasAllWords(item, twoLn):
+      if hasAllWords(item, ln):
          hits += 1
-         print(lnNum, twoLn)
-      prev = ln
+         print(lnNum, ln)
+      #prev = ln
    fRead.close()
    print("Hits:", hits)
 
