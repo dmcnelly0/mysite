@@ -239,14 +239,21 @@ def hasAllWords(item, tx):
    wordList = item.split()
    #cnt = 0
    i = 0
-   newTx = tx
+   flag = "YES"
    for word in wordList:
-      if tx.lower().find(word.lower()) == -1:
-         return False
-      print(word)
+      start = tx.lower().find(word.lower())
+      if start == -1:
+         return "NO"
+         #if re.search(   tx[start - 3 : start] )
+      # if tx[start - 3 : start] == "\".\""
+         # or tx[start - 4 : start] == "nkw="
+         # or :
+         flag = "BAD"
+         print(word)
 
-   return True
-
+   flag = "YES"
+   return flag
+  
 def padSpace(item, tx):
    wordList = item.split()
    newList = [ ]
