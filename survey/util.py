@@ -205,33 +205,40 @@ def flagIfItem(item, wrMode, webSite):
 
    return noMatchCnt
 
-def flagIfItemWide(item, webSite):
-   filenm = ""
-   if webSite == "A":
-      filenm = "amazon.txt"
-   elif webSite == "E":
-      filenm = "ebay.txt"
-   elif webSite == "C":
-      filenm = "craigs.txt"
-   else:
-      raise Exception("Invalid website.")
+def flagIfItemWide(item, filenm):
+   # filenm = ""
+   # if webSite == "A":
+      # filenm = "amazon.txt"
+   # elif webSite == "E":
+      # filenm = "ebay.txt"
+   # elif webSite == "C":
+      # filenm = "craigs.txt"
+   # else:
+      # raise Exception("Invalid website.")
    fRead = open(filenm, "r")
    # create new string not having extra spaces.
    #itemClean = re.sub("\\s+", " ", item)
    hits = 0
-   prev = ""
    lnNum = 0
    for ln in fRead:
       lnNum += 1
-      # create new string not having extra spaces.
-      #lineClean = re.sub("\\s+", " ", ln)
-      # concatinate previous line with current line.
-      #twoLn = prev + ln
-      #if fuzz.token_set_ratio(twoLn.lower(), item.lower()) == 100:
-      if hasAllWords(item, ln):
-         hits += 1
-         print(lnNum, ln)
-      #prev = ln
+      start = 0
+      while True:
+         altPos = ln.find("alt=", start)
+         if altPos == -1:
+            break
+         start = altPos + 5
+         end = ln.find("\">", start)
+         tx = ln[start : end]
+         print(start, end, tx)
+         # create new string not having extra spaces.
+         #lineClean = re.sub("\\s+", " ", ln)
+         # concatinate previous line with current line.
+         #twoLn = prev + ln
+         #if fuzz.token_set_ratio(twoLn.lower(), item.lower()) == 100:
+         if hasAllWords(item, tx):
+            hits += 1
+            print(lnNum, tx)
    fRead.close()
    print("Hits:", hits)
 
@@ -239,20 +246,13 @@ def hasAllWords(item, tx):
    wordList = item.split()
    #cnt = 0
    i = 0
-   flag = "YES"
+   newTx = tx
    for word in wordList:
-      start = tx.lower().find(word.lower())
-      if start == -1:
-         return "NO"
-         #if re.search(   tx[start - 3 : start] )
-      # if tx[start - 3 : start] == "\".\""
-         # or tx[start - 4 : start] == "nkw="
-         # or :
-         flag = "BAD"
-         print(word)
+      if tx.lower().find(word.lower()) == -1:
+         return False
+      print(word)
 
-   flag = "YES"
-   return flag
+   return True
   
 def padSpace(item, tx):
    wordList = item.split()
