@@ -206,36 +206,43 @@ def flagIfItem(item, wrMode, webSite):
    return noMatchCnt
 
 def flagIfItemWide(item, filenm):
-   # filenm = ""
-   # if webSite == "A":
-      # filenm = "amazon.txt"
-   # elif webSite == "E":
-      # filenm = "ebay.txt"
-   # elif webSite == "C":
-      # filenm = "craigs.txt"
-   # else:
-      # raise Exception("Invalid website.")
    fRead = open(filenm, "r")
-   # create new string not having extra spaces.
-   #itemClean = re.sub("\\s+", " ", item)
-   hits = 0
    lnNum = 0
    for ln in fRead:
       lnNum += 1
       start = 0
+      # Loop through occurences of 'alt=' in entire line.
       while True:
          altPos = ln.find("alt=", start)
          if altPos == -1:
             break
+         # The start of text begins 5 spaces after 'alt='.
          start = altPos + 5
          end = ln.find("\">", start)
          tx = ln[start : end]
          print(start, end, tx)
-         # create new string not having extra spaces.
-         #lineClean = re.sub("\\s+", " ", ln)
-         # concatinate previous line with current line.
-         #twoLn = prev + ln
-         #if fuzz.token_set_ratio(twoLn.lower(), item.lower()) == 100:
+         # Find if text contains all of the item words.
+         if hasAllWords(item, tx):
+            hits += 1
+            print(lnNum, tx)
+   fRead.close()
+   print("Hits:", hits)
+
+def flagIfItemCraigs(item, filenm):
+   fRead = open(filenm, "r")
+   hits = 0
+   lnNum = 0
+   for ln in fRead:
+      lnNum += 1
+      # Find search text.
+      srchPos = ln.find("search-result\" title")
+      if srchPos > -1:
+         # The start of text begins 22 spaces after search text.
+         start = srchPos + 22
+         end = ln.find("\">", start)
+         tx = ln[start : end]
+         print(start, end, tx)
+         # Find if text contains all of the item words.
          if hasAllWords(item, tx):
             hits += 1
             print(lnNum, tx)
