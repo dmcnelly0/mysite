@@ -1,5 +1,5 @@
 from django import forms
-from django.db import connections
+#from django.db import connections
 
 class AnswerForm(forms.Form):
     RATINGS5 = [ (0, "<Give rating>"),
@@ -33,6 +33,14 @@ class AuthForm(forms.Form):
 class FileForm(forms.Form):
     title = forms.CharField(max_length=50)
     file = forms.FileField() #label = "File Name", max_length=30)
+
+class PickerForm(forms.Form):
+    WSITE = ( ("A", "Amazon"),
+              ("E", "Ebay"),
+              ("C", "Craigslist"),
+            )
+    website = forms.ChoiceField(label = "Website", widget = forms.RadioSelect, choices = WSITE )
+    item = forms.CharField(label = "Item", max_length = 75)
 
 #label = "Title", 
 #upload_to="survey/"
