@@ -16,4 +16,5 @@ urlpatterns = [
     #path("prestore/", views.authstore, name="authflSs"),
     path("<unm>/store/", fil.flSs, name="flSs"),
     path("upld/", views.uploadFile, name="uploadFile"),
+    path("pick/", views.picker, name="Picker"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

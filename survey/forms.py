@@ -41,6 +41,3 @@ class PickerForm(forms.Form):
             )
     website = forms.ChoiceField(label = "Website", widget = forms.RadioSelect, choices = WSITE )
     item = forms.CharField(label = "Item", max_length = 75)
-
-#label = "Title", 
-#upload_to="survey/"

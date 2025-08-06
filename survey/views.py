@@ -7,8 +7,8 @@ from django.views import View
 from django.utils import timezone
 #import django.contrib.auth.models.User
 
-from .models import Answer, Question, Response
-from .forms import AnswerForm, ChoiceForm, FileForm #, AddChoiceForm ChoiceFormAnlz1
+from .models import Answer, Question, Response, Pick
+from .forms import AnswerForm, ChoiceForm, FileForm, PickerForm #, AddChoiceForm ChoiceFormAnlz1
 from .util import getChoices, getQuestionText, getResponses
 #from .util0 import getQuestions
 #import survey.fil #import flSs
@@ -186,3 +186,21 @@ def respRpt(req):
 # taxonomy that allows the customer to receive an alert when a particular item is placed
 # for sale on the web across multiple websites which serve as data sources like: Craigslist,
 # Bring a Trailer, ebay, Facebook marketplace etc.
+
+def picker(req):
+    if req.method == "POST":
+        pst = req.POST
+        form = PickerForm(pst)
+        print("Valid:", form.is_valid())
+        if form.is_valid():
+            wsite = pst.get("website")
+            item = pst.get("item")
+            p = Pick(wsite_cd = wsite, item = item)
+            p.save()
+        return HttpResponse("<html><h2><center>An email should arrive shortly.</html>") #HttpResponseRedirect("/survey/pick/")
+    else:
+        form = PickerForm()
+        ctx = {"form": form}
+        tmplt = loader.get_template("survey/picker.html")
+
+    return HttpResponse(tmplt.render(ctx, req))
