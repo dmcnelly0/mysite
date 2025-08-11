@@ -117,6 +117,11 @@ def sendEmail():
    except Exception as x:
       print("Error:", x, "Check point:", ckpt)
 
+def runFind(item, wsite):
+   noMtchCt = flagIfItem(item, True, wsite)
+   print("noMtchCt", noMtchCt)
+   flagIfItem(item, False, wsite)
+
 def flagIfItem(item):
    #item = "greengobbler"
    #url = "https://www.amazon.com/s?k=" + item
@@ -170,43 +175,20 @@ def flagIfItem(item, wrMode, webSite):
          #i += 1
          #print(i)
       f.close()
+      return noMatchCnt
    else:
-      fRead = open(filenm, "r")
-      # create new string not having extra spaces.
-      itemClean = re.sub("\\s+", " ", item)
-      lenItem = len(itemClean)
-      prev = ""
-      lnNum = 0
-      for ln in fRead:
-         lnNum += 1
-         # create new string not having extra spaces.
-         lineClean = re.sub("\\s+", " ", ln)
-         twoLn = prev + lineClean
-         #print(twoLn)
-         # create list of positions of the spacebars
-         pList = getPosList(twoLn)
-         #i = 0
-         #while True:
-         # loop through positions excluding the last, which value is a -1
-         for i in range(0, len(pList) - 1):
-            if pList[i] == 0:
-               start = pList[i]
-            else:
-               start = pList[i] + 1
-            subLn = twoLn[start : start + lenItem]
-            #print(subLn)
-            if fuzz.token_sort_ratio(subLn.lower(), itemClean.lower()) == 100:
-               hits += 1
-               print(lnNum, twoLn)
-            #i += 1
-         prev = lineClean[100:].replace("\n", " ")
-      fRead.close()
-      print("Hits:", hits)
+      if webSite == "A":
+         pass
+      elif webSite == "E":
+         flagIfItemWide(item, "ebay.txt")
+      elif webSite == "C":
+         flagIfItemCraigs(item, "craigs.txt")
 
-   return noMatchCnt
+      return None
 
 def flagIfItemWide(item, filenm):
    fRead = open(filenm, "r")
+   hits = 0
    lnNum = 0
    for ln in fRead:
       lnNum += 1

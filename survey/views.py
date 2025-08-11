@@ -9,7 +9,7 @@ from django.utils import timezone
 
 from .models import Answer, Question, Response, Pick
 from .forms import AnswerForm, ChoiceForm, FileForm, PickerForm #, AddChoiceForm ChoiceFormAnlz1
-from .util import getChoices, getQuestionText, getResponses
+from .util import getChoices, getQuestionText, getResponses, runFind
 #from .util0 import getQuestions
 #import survey.fil #import flSs
 
@@ -197,6 +197,7 @@ def picker(req):
             item = pst.get("item")
             p = Pick(wsite_cd = wsite, item = item)
             p.save()
+            runFind(item, wsite)
         return HttpResponse("<html><h2><center>An email should arrive shortly.</html>") #HttpResponseRedirect("/survey/pick/")
     else:
         form = PickerForm()
