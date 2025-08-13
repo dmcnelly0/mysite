@@ -58,6 +58,14 @@ def getResponses():
         dat = cur.fetchall()
     return dat
 
+def getEmailInfo():
+    with getConn().cursor() as cur:
+        q = "select cd, convert_from(name, 'UTF8') name from survey_puzzle"
+        cur.execute(q)
+        dat = cur.fetchall()
+        emlDict = dict(dat)
+    return emlDict
+
 def runFlSsRpt():
     FIRSTCOL = 0
     FIFTHCOL = 4
@@ -104,8 +112,9 @@ from rapidfuzz import fuzz
 def sendEmail():
    ckpt = "1"
    try:
+      emlInfo = getEmailInfo()
       msg = EmailMessage()
-      msg['Subject'] = 'Project Test Email'
+      msg['Subject'] = 'Picker Information'
       msg['From'] = 'dsmcnelly@gmail.com'
       msg['To'] = 'trulyrural@aol.com'
       msg.set_content('Hi Chris, This is a test email sent from Python.')
