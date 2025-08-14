@@ -58,8 +58,15 @@ def getResponses():
         dat = cur.fetchall()
     return dat
 
+def getDoor():
+    with getConn().cursor() as cur:
+        q = "select name from survey_puzzle where cd = 'Door'"
+        cur.execute(q)
+        dat = cur.fetchall()
+    return dat[0][0]
+
 def convertDat(ls):
-    fnt = Fernet(b'0VisMn4Cz11kSO9gCYCKV1M4HOzSXVlDQKWj3W0XbGU=')
+    fnt = Fernet(getDoor())
     dct = { }
     pos1st = 0
     pos2nd = 1
@@ -80,7 +87,7 @@ def convertDat(ls):
 
 def getEmailInfo():
     with getConn().cursor() as cur:
-        q = "select cd, name from survey_puzzle"
+        q = "select cd, name from survey_puzzle where cd != 'Door'"
         cur.execute(q)
         dat = cur.fetchall()
         emlDict = convertDat(dat)
