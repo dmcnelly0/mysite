@@ -58,12 +58,32 @@ def getResponses():
         dat = cur.fetchall()
     return dat
 
+def convertDat(ls):
+    fnt = Fernet(b'0VisMn4Cz11kSO9gCYCKV1M4HOzSXVlDQKWj3W0XbGU=')
+    dct = { }
+    pos1st = 0
+    pos2nd = 1
+    # Convert data and put it into a dictionary (hash map).
+    for i in range(0, len(ls)):
+        bin = fnt.decrypt(ls[i][pos2nd])
+        dct[ ls[i][pos1st] ] = bin.decode("utf-8")
+    return dct
+
+    # fnt = Fernet(b'0VisMn4Cz11kSO9gCYCKV1M4HOzSXVlDQKWj3W0XbGU=')
+    # convLs = [ ]
+    # pos1st = 0
+    # pos2nd = 1
+    # for i in range(0, len(ls)):
+        # bin = fnt.decrypt(ls[i][pos2nd])
+        # convLs.insert(i, ls[i][pos1st], bin.decode("utf-8"))
+    # return convLs
+
 def getEmailInfo():
     with getConn().cursor() as cur:
-        q = "select cd, convert_from(name, 'UTF8') name from survey_puzzle"
+        q = "select cd, name from survey_puzzle"
         cur.execute(q)
         dat = cur.fetchall()
-        emlDict = dict(dat)
+        emlDict = convertDat(dat)
     return emlDict
 
 def runFlSsRpt():
@@ -111,6 +131,7 @@ from rapidfuzz import fuzz
 
 def sendEmail():
    ckpt = "1"
+   port = 465
    try:
       emlInfo = getEmailInfo()
       msg = EmailMessage()
@@ -119,7 +140,7 @@ def sendEmail():
       msg['To'] = 'trulyrural@aol.com'
       msg.set_content('Hi Chris, This is a test email sent from Python.')
       ckpt = "2"
-      with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp: # Replace with your SMTP server and port
+      with smtplib.SMTP_SSL('smtp.gmail.com', port) as smtp: # Replace with your SMTP server and port
           # uwrr fsgg fcwn mxch
           smtp.login('dsmcnelly@gmail.com', 'uwrrfsggfcwnmxch') # Replace with your credentials
           smtp.send_message(msg)
