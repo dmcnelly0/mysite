@@ -136,20 +136,21 @@ def runLogRpt():
 import requests
 from rapidfuzz import fuzz
 
-def sendEmail():
+def sendEmail(msgText):
    ckpt = "1"
    port = 465
    try:
       emlInfo = getEmailInfo()
       msg = EmailMessage()
-      msg['Subject'] = 'Picker Information'
-      msg['From'] = 'dsmcnelly@gmail.com'
-      msg['To'] = 'trulyrural@aol.com'
-      msg.set_content('Hi Chris, This is a test email sent from Python.')
+      msg["Subject"] = "Picker Information"
+      msg["From"] = emlInfo["From"]
+      # NOTE: TEMPORARILY SENDING TO ME
+      msg["To"] = "dsmcnelly0@gmail.com" #emlInfo["To"]
+      #msg.set_content("Hi Chris, This is a test email sent from Python.")
+      msg.set_content(msgText)
       ckpt = "2"
-      with smtplib.SMTP_SSL('smtp.gmail.com', port) as smtp: # Replace with your SMTP server and port
-          # uwrr fsgg fcwn mxch
-          smtp.login('dsmcnelly@gmail.com', 'uwrrfsggfcwnmxch') # Replace with your credentials
+      with smtplib.SMTP_SSL(emlInfo["Send"], port) as smtp: # Replace with your SMTP server and port
+          smtp.login(emlInfo["From"], emlInfo["Tok"]) # Replace with your credentials
           smtp.send_message(msg)
    except Exception as x:
       print("Error:", x, "Check point:", ckpt)
@@ -217,14 +218,17 @@ def flagIfItem(item, wrMode, webSite):
       if webSite == "A":
          pass
       elif webSite == "E":
-         flagIfItemWide(item, "ebay.txt")
+         msgText = flagIfItemWide(item, "ebay.txt")
       elif webSite == "C":
-         flagIfItemCraigs(item, "craigs.txt")
+         msgText = flagIfItemCraigs(item, "craigs.txt")
+      print(msgText)
+      sendEmail(msgText)
 
       return None
 
 def flagIfItemWide(item, filenm):
    fRead = open(filenm, "r")
+   msgTx = ""
    hits = 0
    lnNum = 0
    for ln in fRead:
@@ -243,12 +247,17 @@ def flagIfItemWide(item, filenm):
          # Find if text contains all of the item words.
          if hasAllWords(item, tx):
             hits += 1
-            print(lnNum, tx)
+            print(lnNum, hits, tx)
+            msgTx += str(hits) + "-  " + tx + "\n"
    fRead.close()
+   head = "The results of your request regarding " + item + " yielded " + str(hits) + " results...\n\n"
    print("Hits:", hits)
+   print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+   return head + msgTx
 
 def flagIfItemCraigs(item, filenm):
    fRead = open(filenm, "r")
+   msgTx = ""
    hits = 0
    lnNum = 0
    for ln in fRead:
@@ -264,9 +273,13 @@ def flagIfItemCraigs(item, filenm):
          # Find if text contains all of the item words.
          if hasAllWords(item, tx):
             hits += 1
-            print(lnNum, tx)
+            print(lnNum, hits, tx)
+            msgTx += str(hits) + "-  " + tx + "\n"
    fRead.close()
+   head = "The results of your request regarding " + item + " yielded " + str(hits) + " results...\n\n"
    print("Hits:", hits)
+   print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+   return head + msgTx
 
 def hasAllWords(item, tx):
    wordList = item.split()
