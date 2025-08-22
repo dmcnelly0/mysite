@@ -38,6 +38,7 @@ class PickerForm(forms.Form):
     WSITE = ( ("A", "Amazon"),
               ("E", "Ebay"),
               ("C", "Craigslist"),
+              ("T", "Bring a Trailer")
             )
     website = forms.ChoiceField(label = "Website", widget = forms.RadioSelect, choices = WSITE )
     item = forms.CharField(label = "Item", max_length = 75)

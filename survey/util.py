@@ -201,6 +201,12 @@ def flagIfItem(item, wrMode, webSite):
       elif webSite == "C":
          filenm = "craigs.txt"
          url = "https://washingtondc.craigslist.org/search/sss?query=" + item
+      elif webSite == "M":
+         filenm = "meta.txt"
+         url = "https://www.facebook.com/marketplace/dc/search/?query=" + item
+      elif webSite == "T":
+         filenm = "trailer.txt"
+         url = "https://bringatrailer.com/search/?s=" + item
       else:
          raise Exception("Invalid choice for website.")
       print("URL:", url)
@@ -219,6 +225,8 @@ def flagIfItem(item, wrMode, webSite):
          pass
       elif webSite == "E":
          msgText = flagIfItemWide(item, "ebay.txt")
+      elif webSite == "T":
+         msgText = flagIfItemWide(item, "trailer.txt")
       elif webSite == "C":
          msgText = flagIfItemCraigs(item, "craigs.txt")
       print(msgText)
