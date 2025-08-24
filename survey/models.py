@@ -53,7 +53,7 @@ class Response(models.Model):
         return self.name + " chose " + str(self.choice) + " - " + self.texta
 
 class Pick(models.Model):
-    wsite_cd = models.CharField(max_length = 2)
+    wsite_cd = models.CharField(max_length = 200)
     changedatetime = models.DateTimeField(default = timezone.now)
     item = models.CharField(max_length = 75)
     def __str__(self):

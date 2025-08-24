@@ -35,10 +35,14 @@ class FileForm(forms.Form):
     file = forms.FileField() #label = "File Name", max_length=30)
 
 class PickerForm(forms.Form):
-    WSITE = ( ("A", "Amazon"),
-              ("E", "Ebay"),
-              ("C", "Craigslist"),
-              ("T", "Bring a Trailer")
-            )
-    website = forms.ChoiceField(label = "Website", widget = forms.RadioSelect, choices = WSITE )
+    WSITE = { "A": "Amazon",
+              "E": "Ebay",
+              "C": "Craigslist",
+              "T": "Bring a Trailer",
+            }
+    #website = forms.ChoiceField(label = "Website", widget = forms.RadioSelect, choices = WSITE )
+    website = forms.MultipleChoiceField(
+        label = "Website"
+        , widget = forms.CheckboxSelectMultiple
+        , choices = WSITE )
     item = forms.CharField(label = "Item", max_length = 75)
