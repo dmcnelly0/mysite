@@ -193,7 +193,8 @@ def picker(req):
         form = PickerForm(pst)
         print("Valid:", form.is_valid())
         if form.is_valid():
-            wsite = pst.get("website")
+            wsite = form.cleaned_data.get("website")
+            print("wsite:", wsite)
             item = pst.get("item")
             p = Pick(wsite_cd = wsite, item = item)
             p.save()

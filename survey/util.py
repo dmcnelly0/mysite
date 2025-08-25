@@ -192,23 +192,23 @@ def flagIfItem(item, wrMode, webSite):
    #url = ""
    hits = 0
    if wrMode:
-      if webSite == "A":
+      if 0 < webSite.count("A"):
          filenm = "amazon.txt"
          url = "https://www.amazon.com/s?k=" + item
-      elif webSite == "E":
+      if 0 < webSite.count("E"):
          filenm = "ebay.txt"
          url = "https://www.ebay.com/sch/i.html?_nkw=" + item
-      elif webSite == "C":
+      if 0 < webSite.count("C"):
          filenm = "craigs.txt"
          url = "https://washingtondc.craigslist.org/search/sss?query=" + item
-      elif webSite == "M":
+      if 0 < webSite.count("M"):
          filenm = "meta.txt"
          url = "https://www.facebook.com/marketplace/dc/search/?query=" + item
-      elif webSite == "T":
+      if 0 < webSite.count("T"):
          filenm = "trailer.txt"
          url = "https://bringatrailer.com/search/?s=" + item
-      else:
-         raise Exception("Invalid choice for website.")
+      #else:
+      #   raise Exception("Invalid choice for website.")
       print("URL:", url)
       res = requests.get(url)
       noMatchCnt = res.text.count("No exact matches found")
@@ -221,16 +221,22 @@ def flagIfItem(item, wrMode, webSite):
       f.close()
       return noMatchCnt
    else:
-      if webSite == "A":
+      ckpt = "3"
+      print(webSite, ckpt)
+      msgText = ""
+      if 0 < webSite.count("A"):
          pass
-      elif webSite == "E":
-         msgText = flagIfItemWide(item, "ebay.txt")
-      elif webSite == "T":
-         msgText = flagIfItemWide(item, "trailer.txt")
-      elif webSite == "C":
-         msgText = flagIfItemCraigs(item, "craigs.txt")
-      print(msgText)
-      sendEmail(msgText)
+      if 0 < webSite.count("E"):
+         msgText += flagIfItemWide(item, "ebay.txt")
+      if 0 < webSite.count("T"):
+         msgText += flagIfItemWide(item, "trailer.txt")
+      if 0 < webSite.count("C"):
+         msgText += flagIfItemCraigs(item, "craigs.txt")
+      #print(msgText)
+      msgFl = open("msgText.txt", "w")
+      msgFl.write(msgText)
+      msgFl.close()
+      #sendEmail(msgText)
 
       return None
 
