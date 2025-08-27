@@ -133,6 +133,7 @@ def runLogRpt():
        # self.message = message
        # super().__init__(self.message)
 
+from warnings import deprecated
 import requests
 from rapidfuzz import fuzz
 
@@ -160,12 +161,13 @@ def runFind(item, wsite):
    print("noMtchCt", noMtchCt)
    flagIfItem(item, False, wsite)
 
+@deprecated("This version should not be used anymore.")
 def flagIfItem(item):
    #item = "greengobbler"
    #url = "https://www.amazon.com/s?k=" + item
    url = "https://www.ebay.com/sch/i.html?_nkw=" + item
    print("URL:", url)
-   f = open("Ebay.txt", "w")
+   f = open("EbayDprc.txt", "w")
    res = requests.get(url)
    i = 0
    for ln in res:
@@ -264,7 +266,16 @@ def flagIfItemWide(item, filenm):
             print(lnNum, hits, tx)
             msgTx += str(hits) + "-  " + tx + "\n"
    fRead.close()
-   head = "The results of your request regarding " + item + " yielded " + str(hits) + " results...\n\n"
+   match filenm:
+      case "ebay.txt":
+         site = "Ebay"
+      case "trailer.txt":
+         site = "Bring a Trailer"
+      case _:
+         site = "Unknown"
+   hitsStr = str(hits)
+   head = "The results of your request regarding '" + item + "' yielded " + hitsStr
+   head += " results from " + site + "...\n\n"
    print("Hits:", hits)
    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
    return head + msgTx
@@ -290,7 +301,9 @@ def flagIfItemCraigs(item, filenm):
             print(lnNum, hits, tx)
             msgTx += str(hits) + "-  " + tx + "\n"
    fRead.close()
-   head = "The results of your request regarding " + item + " yielded " + str(hits) + " results...\n\n"
+   hitsStr = str(hits)
+   head = "The results of your request regarding '" + item + "' yielded " + hitsStr
+   head += " results from Craigs List...\n\n"
    print("Hits:", hits)
    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
    return head + msgTx
