@@ -157,8 +157,9 @@ def sendEmail(msgText):
       print("Error:", x, "Check point:", ckpt)
 
 def runFind(item, wsite):
-   noMtchCt = flagIfItem(item, True, wsite)
-   print("noMtchCt", noMtchCt)
+   #noMtchCt =
+   flagIfItem(item, True, wsite)
+   #print("noMtchCt", noMtchCt)
    flagIfItem(item, False, wsite)
 
 @deprecated("This version should not be used anymore.")
@@ -187,41 +188,47 @@ def flagIfItem(item):
 
    #return url
 
+def makeFile(filenm, url):
+   res = requests.get(url)
+   noMatchCnt = res.text.count("No exact matches found")
+   print("No match count:", noMatchCnt)
+   f = open(filenm, "w")
+   i = 0
+   for ln in res.iter_lines():
+      f.write(str(ln) + "\n")
+   f.close()
+   res.close()
+
 # Overloaded to give option to create text file of web page or read text file and scrape.
 def flagIfItem(item, wrMode, webSite):
    noMatchCnt = -1
    filenm = ""
-   #url = ""
+   #urls = []
    hits = 0
    if wrMode:
       if 0 < webSite.count("A"):
          filenm = "amazon.txt"
          url = "https://www.amazon.com/s?k=" + item
+         makeFile(filenm, url)
       if 0 < webSite.count("E"):
          filenm = "ebay.txt"
          url = "https://www.ebay.com/sch/i.html?_nkw=" + item
+         makeFile(filenm, url)
       if 0 < webSite.count("C"):
          filenm = "craigs.txt"
          url = "https://washingtondc.craigslist.org/search/sss?query=" + item
+         makeFile(filenm, url)
       if 0 < webSite.count("M"):
          filenm = "meta.txt"
          url = "https://www.facebook.com/marketplace/dc/search/?query=" + item
+         makeFile(filenm, url)
       if 0 < webSite.count("T"):
          filenm = "trailer.txt"
          url = "https://bringatrailer.com/search/?s=" + item
+         makeFile(filenm, url)
       #else:
       #   raise Exception("Invalid choice for website.")
-      print("URL:", url)
-      res = requests.get(url)
-      noMatchCnt = res.text.count("No exact matches found")
-      f = open(filenm, "w")
-      i = 0
-      for ln in res.iter_lines():
-         f.write(str(ln) + "\n")
-         #i += 1
-         #print(i)
-      f.close()
-      return noMatchCnt
+      #print("urls:", urls)
    else:
       ckpt = "3"
       print(webSite, ckpt)
@@ -240,8 +247,6 @@ def flagIfItem(item, wrMode, webSite):
       msgFl.close()
       #sendEmail(msgText)
 
-      return None
-
 def flagIfItemWide(item, filenm):
    fRead = open(filenm, "r")
    msgTx = ""
@@ -259,11 +264,11 @@ def flagIfItemWide(item, filenm):
          start = altPos + 5
          end = ln.find("\">", start)
          tx = ln[start : end]
-         print(start, end, tx)
+         #print(start, end, tx)
          # Find if text contains all of the item words.
          if hasAllWords(item, tx):
             hits += 1
-            print(lnNum, hits, tx)
+            #print(lnNum, hits, tx)
             msgTx += str(hits) + "-  " + tx + "\n"
    fRead.close()
    match filenm:
@@ -278,6 +283,7 @@ def flagIfItemWide(item, filenm):
    head += " results from " + site + "...\n\n"
    print("Hits:", hits)
    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+   print(head + msgTx)
    return head + msgTx
 
 def flagIfItemCraigs(item, filenm):
@@ -294,11 +300,11 @@ def flagIfItemCraigs(item, filenm):
          start = srchPos + 22
          end = ln.find("\">", start)
          tx = ln[start : end]
-         print(start, end, tx)
+         #print(start, end, tx)
          # Find if text contains all of the item words.
          if hasAllWords(item, tx):
             hits += 1
-            print(lnNum, hits, tx)
+            #print(lnNum, hits, tx)
             msgTx += str(hits) + "-  " + tx + "\n"
    fRead.close()
    hitsStr = str(hits)
@@ -306,6 +312,7 @@ def flagIfItemCraigs(item, filenm):
    head += " results from Craigs List...\n\n"
    print("Hits:", hits)
    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+   print(head + msgTx)
    return head + msgTx
 
 def hasAllWords(item, tx):
