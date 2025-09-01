@@ -1,0 +1,19 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=0.75">
+<head><title>Picker</title></head>
+<body style="background-color:300000">
+<font face="Tahoma" color=white>
+<style>
+blockquote {
+    margin-left: 175;
+}
+</style>
+<center><h3>Enter Item</h3></center>
+<blockquote>
+<form action="/survey/pick/" onsubmit="return validate()" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" name="Pick" value="Submit">
+</form>
+</body>
+</html>
