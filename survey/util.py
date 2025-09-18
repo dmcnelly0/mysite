@@ -133,6 +133,12 @@ def runLogRpt():
        # self.message = message
        # super().__init__(self.message)
 
+AMZ_URL = "https://www.amazon.com/s?k="
+EBAY_URL = "https://www.ebay.com/sch/i.html?_nkw="
+CL_URL = "https://washingtondc.craigslist.org/search/sss?query="
+FBK_URL = "https://www.facebook.com/marketplace/dc/search/?query="
+TLR_URL = "https://bringatrailer.com/search/?s="
+
 from warnings import deprecated
 import requests
 from rapidfuzz import fuzz
@@ -145,9 +151,8 @@ def sendEmail(msgText):
       msg = EmailMessage()
       msg["Subject"] = "Picker Information"
       msg["From"] = emlInfo["From"]
-      # NOTE: TEMPORARILY SENDING TO ME
-      msg["To"] = "dsmcnelly0@gmail.com" #emlInfo["To"]
-      #msg.set_content("Hi Chris, This is a test email sent from Python.")
+      msg["To"] = emlInfo["To"]
+      #msg["To"] = "dsmcnelly0@gmail.com" # NOTE: TEMPORARILY SENDING TO ME
       msg.set_content(msgText)
       ckpt = "2"
       with smtplib.SMTP_SSL(emlInfo["Send"], port) as smtp: # Replace with your SMTP server and port
@@ -208,24 +213,24 @@ def flagIfItem(item, wrMode, webSite):
    if wrMode:
       if 0 < webSite.count("A"):
          filenm = "amazon.txt"
-         url = "https://www.amazon.com/s?k=" + item
-         makeFile(filenm, url)
+         fullUrl = AMZ_URL + item
+         makeFile(filenm, fullUrl)
       if 0 < webSite.count("E"):
          filenm = "ebay.txt"
-         url = "https://www.ebay.com/sch/i.html?_nkw=" + item
-         makeFile(filenm, url)
+         fullUrl = EBAY_URL + item
+         makeFile(filenm, fullUrl)
       if 0 < webSite.count("C"):
          filenm = "craigs.txt"
-         url = "https://washingtondc.craigslist.org/search/sss?query=" + item
-         makeFile(filenm, url)
+         fullUrl = CL_URL + item
+         makeFile(filenm, fullUrl)
       if 0 < webSite.count("M"):
          filenm = "meta.txt"
-         url = "https://www.facebook.com/marketplace/dc/search/?query=" + item
-         makeFile(filenm, url)
+         fullUrl = FBK_URL + item
+         makeFile(filenm, fullUrl)
       if 0 < webSite.count("T"):
          filenm = "trailer.txt"
-         url = "https://bringatrailer.com/search/?s=" + item
-         makeFile(filenm, url)
+         fullUrl = TLR_URL + item
+         makeFile(filenm, fullUrl)
       #else:
       #   raise Exception("Invalid choice for website.")
       #print("urls:", urls)
@@ -237,17 +242,27 @@ def flagIfItem(item, wrMode, webSite):
          pass
       if 0 < webSite.count("E"):
          msgText += flagIfItemWide(item, "ebay.txt")
-      if 0 < webSite.count("T"):
-         msgText += flagIfItemWide(item, "trailer.txt")
       if 0 < webSite.count("C"):
          msgText += flagIfItemCraigs(item, "craigs.txt")
+      if 0 < webSite.count("T"):
+         msgText += flagIfItemWide(item, "trailer.txt")
       #print(msgText)
-      msgFl = open("msgText.txt", "w")
-      msgFl.write(msgText)
-      msgFl.close()
-      #sendEmail(msgText)
+      # msgFl = open("msgText.txt", "w")
+      # msgFl.write(msgText)
+      # msgFl.close()
+      sendEmail(msgText)
 
 def flagIfItemWide(item, filenm):
+   match filenm:
+      case "ebay.txt":
+         site = "Ebay"
+         url = EBAY_URL
+      case "trailer.txt":
+         site = "Bring a Trailer"
+         url = TLR_URL
+      case _:
+         site = "Unknown"
+         url = "Unknown"
    fRead = open(filenm, "r")
    msgTx = ""
    hits = 0
@@ -268,16 +283,10 @@ def flagIfItemWide(item, filenm):
          # Find if text contains all of the item words.
          if hasAllWords(item, tx):
             hits += 1
-            #print(lnNum, hits, tx)
-            msgTx += str(hits) + "-  " + tx + "\n"
+            print(lnNum, hits, tx)
+            fullUrl = url + tx.rstrip("\" />'").replace(" ", "+")
+            msgTx += str(hits) + "-  " + tx + "  " + fullUrl + "\n"
    fRead.close()
-   match filenm:
-      case "ebay.txt":
-         site = "Ebay"
-      case "trailer.txt":
-         site = "Bring a Trailer"
-      case _:
-         site = "Unknown"
    hitsStr = str(hits)
    head = "The results of your request regarding '" + item + "' yielded " + hitsStr
    head += " results from " + site + "...\n\n"
@@ -305,7 +314,8 @@ def flagIfItemCraigs(item, filenm):
          if hasAllWords(item, tx):
             hits += 1
             #print(lnNum, hits, tx)
-            msgTx += str(hits) + "-  " + tx + "\n"
+            fullUrl = CL_URL + tx.rstrip("\" />'").replace(" ", "+")
+            msgTx += str(hits) + "-  " + tx + "  " + fullUrl + "\n"
    fRead.close()
    hitsStr = str(hits)
    head = "The results of your request regarding '" + item + "' yielded " + hitsStr
