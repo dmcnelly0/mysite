@@ -10,8 +10,6 @@ from django.utils import timezone
 from .models import Answer, Question, Response, Pick
 from .forms import AnswerForm, ChoiceForm, FileForm, PickerForm #, AddChoiceForm ChoiceFormAnlz1
 from .util import getChoices, getQuestionText, getResponses, runFind
-#from .util0 import getQuestions
-#import survey.fil #import flSs
 
 # Create your views here.
 
@@ -27,10 +25,6 @@ def index(req):
     #print("Authenticated:", usr.is_authenticated)
     tmplt = loader.get_template("survey/index.html")
     return HttpResponse(tmplt.render())
-
-# def admin(req):
-   # tmplt = loader.get_template("survey/admin.html")
-   # return HttpResponse(tmplt.render())
 
 class AddAnswer(View):
     def get(self, req):
@@ -57,7 +51,6 @@ class AddAnswer(View):
            print("Not a valid form.")
 
         return HttpResponse("<html><h2><center>Thank you for your responce</html>")
-           #("<html><h2>Hi there!!! I'm Snoop Dougie Doug</h2></html>")
 
 def list(req):
     ans = Answer.objects.order_by("pk")
@@ -67,10 +60,6 @@ def list(req):
 
     return HttpResponse(tmplt.render(ctx))
 
-#def authstore(req):
-    #u = None
-    #try:
-
 def pollHome(req):
     print("Check point:", "1")
     quest = Question.objects.all() #("question_text")
@@ -78,31 +67,6 @@ def pollHome(req):
     ctx = { "quest": quest }
 
     return HttpResponse(tmplt.render(ctx))
-    #return HttpResponse("Welcome")
-    #return HttpResponse("hear this " + str(quest))# + " " + os.getcwd())
-
-# def addChoice(req):
-    # if req.method == "POST":
-        # pst = req.POST
-        # form = AddChoiceForm(pst)
-        # form.fields["question"].choices = getQuestions()
-        # if form.is_valid():
-            # quest_id = pst.get("question")
-            #print("quest_id type:", type(quest_id))
-            # nm = pst.get("name")
-            # c = Choice(question_id = int(quest_id), choice_text = nm )
-            # c.save()
-        # else:
-           # print("Not a valid form.")
-        # return HttpResponseRedirect("/survey/addchoice/")
-
-    # else:
-        # form = AddChoiceForm()
-        # form.fields["question"].choices = getQuestions()
-        # tmplt = loader.get_template("survey/add_choice.html")
-        # ctx = { "form": form }
-
-    # return HttpResponse(tmplt.render(ctx, req))
 
 def choice(req, question_id):
     print("Check point:", "1.3", "req:", type(req))
@@ -129,23 +93,17 @@ def choice(req, question_id):
             quest_text = getQuestionText(question_id)
             form.fields["choice_"].label = quest_text
             tmplt = loader.get_template("survey/choice.html")
-            #print(str(tmplt))
-            #print("Question:", getQuestionText(question_id))
             ckpt = "3"
             print("Check point:", ckpt)
             ctx = { "form": form, "quest_id": question_id } #, "quest_text": quest_text }
         except Exception as x:
             print("Inner Error:", x, "Check point:", ckpt)
+
     print("Check point:", "4")
-    #try:
     return HttpResponse(tmplt.render(ctx, req))
-    # except Exception as x:
-        # print("Outer Error:", x, "Check point:", ckpt)
-        # return HttpResponse("Outer Error:" + str(x) + " at " + ckpt)
 
 def uploadFile(req):
     if req.method == "POST":
-        #f = req.FILES.get("file")
         form = FileForm(req.POST, req.FILES)
         if form.is_valid():
             print("Check point:", "7.4", "Type:", type(req.FILES["file"]))
@@ -160,7 +118,6 @@ def uploadFile(req):
         ctx = { "form": form }
 
     return HttpResponse(tmplt.render(ctx, req))
-    #return render(req, "survey/upload.html", {"form": form})
 
 def handleFile(fil):
     with open(fil.name, "wb+") as dest:
