@@ -163,9 +163,9 @@ def sendEmail(msgText):
 
 def runFind(item, wsite):
    #noMtchCt =
-   flagIfItem(item, True, wsite)
+   saveData(item, wsite)
    #print("noMtchCt", noMtchCt)
-   flagIfItem(item, False, wsite)
+   flagIfItem(item, wsite)
 
 @deprecated("This version should not be used anymore.")
 def flagIfItem(item):
@@ -204,53 +204,50 @@ def makeFile(filenm, url):
    f.close()
    res.close()
 
-# Overloaded to give option to create text file of web page or read text file and scrape.
-def flagIfItem(item, wrMode, webSite):
+def saveData(item, webSite):
    noMatchCnt = -1
    filenm = ""
    #urls = []
    hits = 0
-   if wrMode:
-      if 0 < webSite.count("A"):
-         filenm = "amazon.txt"
-         fullUrl = AMZ_URL + item
-         makeFile(filenm, fullUrl)
-      if 0 < webSite.count("E"):
-         filenm = "ebay.txt"
-         fullUrl = EBAY_URL + item
-         makeFile(filenm, fullUrl)
-      if 0 < webSite.count("C"):
-         filenm = "craigs.txt"
-         fullUrl = CL_URL + item
-         makeFile(filenm, fullUrl)
-      if 0 < webSite.count("M"):
-         filenm = "meta.txt"
-         fullUrl = FBK_URL + item
-         makeFile(filenm, fullUrl)
-      if 0 < webSite.count("T"):
-         filenm = "trailer.txt"
-         fullUrl = TLR_URL + item
-         makeFile(filenm, fullUrl)
-      #else:
-      #   raise Exception("Invalid choice for website.")
-      #print("urls:", urls)
-   else:
-      ckpt = "3"
-      print(webSite, ckpt)
-      msgText = ""
-      if 0 < webSite.count("A"):
-         pass
-      if 0 < webSite.count("E"):
-         msgText += flagIfItemWide(item, "ebay.txt")
-      if 0 < webSite.count("C"):
-         msgText += flagIfItemCraigs(item, "craigs.txt")
-      if 0 < webSite.count("T"):
-         msgText += flagIfItemWide(item, "trailer.txt")
-      #print(msgText)
-      # msgFl = open("msgText.txt", "w")
-      # msgFl.write(msgText)
-      # msgFl.close()
-      sendEmail(msgText)
+   if 0 < webSite.count("A"):
+      filenm = "amazon.txt"
+      fullUrl = AMZ_URL + item
+      makeFile(filenm, fullUrl)
+   if 0 < webSite.count("E"):
+      filenm = "ebay.txt"
+      fullUrl = EBAY_URL + item
+      makeFile(filenm, fullUrl)
+   if 0 < webSite.count("C"):
+      filenm = "craigs.txt"
+      fullUrl = CL_URL + item
+      makeFile(filenm, fullUrl)
+   if 0 < webSite.count("M"):
+      filenm = "meta.txt"
+      fullUrl = FBK_URL + item
+      makeFile(filenm, fullUrl)
+   if 0 < webSite.count("T"):
+      filenm = "trailer.txt"
+      fullUrl = TLR_URL + item
+      makeFile(filenm, fullUrl)
+
+# Overloaded to give option to create text file of web page or read text file and scrape.
+def flagIfItem(item, webSite):
+   ckpt = "3"
+   print(webSite, ckpt)
+   msgText = ""
+   if 0 < webSite.count("A"):
+      pass
+   if 0 < webSite.count("E"):
+      msgText += flagIfItemWide(item, "ebay.txt")
+   if 0 < webSite.count("C"):
+      msgText += flagIfItemCraigs(item, "craigs.txt")
+   if 0 < webSite.count("T"):
+      msgText += flagIfItemWide(item, "trailer.txt")
+   #print(msgText)
+   # msgFl = open("msgText.txt", "w")
+   # msgFl.write(msgText)
+   # msgFl.close()
+   sendEmail(msgText)
 
 def flagIfItemWide(item, filenm):
    match filenm:
