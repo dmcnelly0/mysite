@@ -142,6 +142,7 @@ TLR_URL = "https://bringatrailer.com/search/?s="
 from warnings import deprecated
 import requests
 from rapidfuzz import fuzz
+#from survey.models import Pick
 
 def sendEmail(msgText):
    ckpt = "1"
@@ -162,10 +163,14 @@ def sendEmail(msgText):
       print("Error:", x, "Check point:", ckpt)
 
 def runFind(item, wsite):
-   #noMtchCt =
    saveData(item, wsite)
-   #print("noMtchCt", noMtchCt)
    flagIfItem(item, wsite)
+
+# def cronRun():
+   # Get the latest active record.
+   # pick = Pick.objects.filter(active = True).order_by("changedatetime").reverse()
+   # print(pick[0])
+   #runFind(pick[0].item, pick[0].wsite_cd)
 
 @deprecated("This version should not be used anymore.")
 def flagIfItem(item):

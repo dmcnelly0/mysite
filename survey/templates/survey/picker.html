@@ -10,7 +10,7 @@ blockquote {
 </style>
 <center><h3>Enter Item</h3></center>
 <blockquote>
-<form action="/survey/pick/" onsubmit="return validate()" method="post">
+<form action="/survey/pick/" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" name="Pick" value="Submit">

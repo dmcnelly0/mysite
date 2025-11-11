@@ -56,5 +56,6 @@ class Pick(models.Model):
     wsite_cd = models.CharField(max_length = 200)
     changedatetime = models.DateTimeField(default = timezone.now)
     item = models.CharField(max_length = 75)
+    active = models.BooleanField(default = False)
     def __str__(self):
-        return self.wsite_cd + " " + self.item + " " + str(self.changedatetime)
+        return self.wsite_cd + " " + self.item + " " + str(self.changedatetime) + " " + str(self.active)

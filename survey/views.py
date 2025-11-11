@@ -153,9 +153,15 @@ def picker(req):
             wsite = form.cleaned_data.get("website")
             print("wsite:", wsite)
             item = pst.get("item")
-            p = Pick(wsite_cd = wsite, item = item)
+            autorun = form.cleaned_data.get("autorun")
+            print("autorun:", autorun, type(autorun))
+            if autorun:
+               Pick.objects.filter(active = True).update(active = False)
+            p = Pick(wsite_cd = wsite, item = item, active = autorun)
             p.save()
-            runFind(item, wsite)
+            if not autorun:
+               print("autorun:", autorun)
+               runFind(item, wsite)
         return HttpResponse("<html><h2><center>An email should arrive shortly.</html>") #HttpResponseRedirect("/survey/pick/")
     else:
         form = PickerForm()
