@@ -85,13 +85,33 @@ def convertDat(ls):
         # convLs.insert(i, ls[i][pos1st], bin.decode("utf-8"))
     # return convLs
 
-def getEmailInfo():
-    with getConn().cursor() as cur:
-        q = "select cd, name from survey_puzzle where cd != 'Door'"
-        cur.execute(q)
-        dat = cur.fetchall()
+def getEmailInfo(con):
+    ckpt = "U2"
+    q = "select cd, name from survey_puzzle where cd != 'Door'"
+    try:
+        if con == None:
+            print("con is null", con)
+            ckpt = "U2.2"
+            with getConn().cursor() as cur:
+               ckpt = "U2.3"
+               cur.execute(q)
+               ckpt = "U2.4"
+               dat = cur.fetchall()
+        else:
+            ckpt = "U2.5"
+            print("con is not null-", con)
+            cur = con.cursor()
+            ckpt = "U2.6"
+            cur.execute(q)
+            ckpt = "U2.7"
+            dat = cur.fetchall()
+            cur.close()
         emlDict = convertDat(dat)
-    return emlDict
+
+        return emlDict
+
+    except Exception as x:
+        print("Error:", x, "Check point:", ckpt)
 
 def runFlSsRpt():
     FIRSTCOL = 0
@@ -144,27 +164,29 @@ import requests
 from rapidfuzz import fuzz
 #from survey.models import Pick
 
-def sendEmail(msgText):
-   ckpt = "1"
+def sendEmail(msgText, con):
+   ckpt = "U1"
    port = 465
    try:
-      emlInfo = getEmailInfo()
+      emlInfo = getEmailInfo(con)
+      ckpt = "U1.2"
       msg = EmailMessage()
       msg["Subject"] = "Picker Information"
+      ckpt = "U1.3"
       msg["From"] = emlInfo["From"]
       msg["To"] = emlInfo["To"]
       #msg["To"] = "dsmcnelly0@gmail.com" # NOTE: TEMPORARILY SENDING TO ME
       msg.set_content(msgText)
-      ckpt = "2"
+      ckpt = "U1.5"
       with smtplib.SMTP_SSL(emlInfo["Send"], port) as smtp: # Replace with your SMTP server and port
           smtp.login(emlInfo["From"], emlInfo["Tok"]) # Replace with your credentials
           smtp.send_message(msg)
    except Exception as x:
       print("Error:", x, "Check point:", ckpt)
 
-def runFind(item, wsite):
+def runFind(item, wsite, con):
    saveData(item, wsite)
-   flagIfItem(item, wsite)
+   flagIfItem(item, wsite, con)
 
 # def cronRun():
    # Get the latest active record.
@@ -236,7 +258,7 @@ def saveData(item, webSite):
       makeFile(filenm, fullUrl)
 
 # Overloaded to give option to create text file of web page or read text file and scrape.
-def flagIfItem(item, webSite):
+def flagIfItem(item, webSite, con):
    ckpt = "3"
    print(webSite, ckpt)
    msgText = ""
@@ -252,19 +274,28 @@ def flagIfItem(item, webSite):
    # msgFl = open("msgText.txt", "w")
    # msgFl.write(msgText)
    # msgFl.close()
-   sendEmail(msgText)
+   sendEmail(msgText, con)
 
 def flagIfItemWide(item, filenm):
-   match filenm:
-      case "ebay.txt":
-         site = "Ebay"
-         url = EBAY_URL
-      case "trailer.txt":
-         site = "Bring a Trailer"
-         url = TLR_URL
-      case _:
-         site = "Unknown"
-         url = "Unknown"
+   if filenm == "ebay.txt":
+      site = "Ebay"
+      url = EBAY_URL
+   elif filenm == "trailer.txt":
+      site = "Bring a Trailer"
+      url = TLR_URL
+   else:
+      site = "Unknown"
+      url = "Unknown"
+   # match filenm:
+      # case "ebay.txt":
+         # site = "Ebay"
+         # url = EBAY_URL
+      # case "trailer.txt":
+         # site = "Bring a Trailer"
+         # url = TLR_URL
+      # case _:
+         # site = "Unknown"
+         # url = "Unknown"
    fRead = open(filenm, "r")
    msgTx = ""
    hits = 0
