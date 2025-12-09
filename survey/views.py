@@ -161,7 +161,7 @@ def picker(req):
             p.save()
             if not autorun:
                print("autorun:", autorun)
-               runFind(item, wsite)
+               runFind(item, wsite, None)
         return HttpResponse("<html><h2><center>An email should arrive shortly.</html>") #HttpResponseRedirect("/survey/pick/")
     else:
         form = PickerForm()

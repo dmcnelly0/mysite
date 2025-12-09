@@ -76,42 +76,13 @@ def convertDat(ls):
         dct[ ls[i][pos1st] ] = bin.decode("utf-8")
     return dct
 
-    # fnt = Fernet(b'0VisMn4Cz11kSO9gCYCKV1M4HOzSXVlDQKWj3W0XbGU=')
-    # convLs = [ ]
-    # pos1st = 0
-    # pos2nd = 1
-    # for i in range(0, len(ls)):
-        # bin = fnt.decrypt(ls[i][pos2nd])
-        # convLs.insert(i, ls[i][pos1st], bin.decode("utf-8"))
-    # return convLs
-
-def getEmailInfo(con):
-    ckpt = "U2"
-    q = "select cd, name from survey_puzzle where cd != 'Door'"
-    try:
-        if con == None:
-            print("con is null", con)
-            ckpt = "U2.2"
-            with getConn().cursor() as cur:
-               ckpt = "U2.3"
-               cur.execute(q)
-               ckpt = "U2.4"
-               dat = cur.fetchall()
-        else:
-            ckpt = "U2.5"
-            print("con is not null-", con)
-            cur = con.cursor()
-            ckpt = "U2.6"
-            cur.execute(q)
-            ckpt = "U2.7"
-            dat = cur.fetchall()
-            cur.close()
+def getEmailInfo():
+    with getConn().cursor() as cur:
+        q = "select cd, name from survey_puzzle where cd != 'Door'"
+        cur.execute(q)
+        dat = cur.fetchall()
         emlDict = convertDat(dat)
-
-        return emlDict
-
-    except Exception as x:
-        print("Error:", x, "Check point:", ckpt)
+    return emlDict
 
 def runFlSsRpt():
     FIRSTCOL = 0
@@ -164,11 +135,14 @@ import requests
 from rapidfuzz import fuzz
 #from survey.models import Pick
 
-def sendEmail(msgText, con):
+def sendEmail(msgText, eml):
    ckpt = "U1"
    port = 465
    try:
-      emlInfo = getEmailInfo(con)
+      if eml == None:
+         emlInfo = getEmailInfo()
+      else:
+         emlInfo = eml
       ckpt = "U1.2"
       msg = EmailMessage()
       msg["Subject"] = "Picker Information"
@@ -184,9 +158,9 @@ def sendEmail(msgText, con):
    except Exception as x:
       print("Error:", x, "Check point:", ckpt)
 
-def runFind(item, wsite, con):
+def runFind(item, wsite, eml):
    saveData(item, wsite)
-   flagIfItem(item, wsite, con)
+   flagIfItem(item, wsite, eml)
 
 # def cronRun():
    # Get the latest active record.
@@ -258,7 +232,7 @@ def saveData(item, webSite):
       makeFile(filenm, fullUrl)
 
 # Overloaded to give option to create text file of web page or read text file and scrape.
-def flagIfItem(item, webSite, con):
+def flagIfItem(item, webSite, eml):
    ckpt = "3"
    print(webSite, ckpt)
    msgText = ""
@@ -274,7 +248,7 @@ def flagIfItem(item, webSite, con):
    # msgFl = open("msgText.txt", "w")
    # msgFl.write(msgText)
    # msgFl.close()
-   sendEmail(msgText, con)
+   sendEmail(msgText, eml)
 
 def flagIfItemWide(item, filenm):
    if filenm == "ebay.txt":
