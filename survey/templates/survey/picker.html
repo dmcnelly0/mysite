@@ -14,6 +14,7 @@ blockquote {
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" name="Pick" value="Submit">
+    <iframe src="/survey/plist/" name="pickerRpt" height="400" width="600" title="Picker Report"></iframe>
 </form>
 </body>
 </html>

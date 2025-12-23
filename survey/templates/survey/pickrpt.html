@@ -1,0 +1,13 @@
+<html>
+<body>
+<center><h3>Pick History</h3></center>
+{% if hist %}
+   {% for h in hist %}
+      {{ h }}
+      <br>
+   {% endfor %}
+{% else %}
+    <p>No answers are available.</p>
+{% endif %}
+</body>
+</html>
