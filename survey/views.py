@@ -147,21 +147,21 @@ def respRpt(req):
 def pList(req):
     ckpt = "3"
     try:
-        print("Check point:", ckpt)
-        pick = Pick.objects.order_by("changedatetime").reverse()
+        # print("Check point:", ckpt)
+        # pick = Pick.objects.order_by("changedatetime").reverse()
         ckpt = "3.3"
         print("Check point:", ckpt)
         tmplt = loader.get_template("survey/pickrpt.html")
-        ckpt = "3.5"
-        print("Check point:", ckpt)
-        ctx = { "hist": pick, }
+        # ckpt = "3.5"
+        # print("Check point:", ckpt)
+        # ctx = { "hist": pick, }
         ckpt = "3.7"
 
     except Exception as x:
         print("Inner Error:", x, "Check point:", ckpt)
 
     print("Check point:", ckpt)
-    return HttpResponse(tmplt.render(ctx))
+    return HttpResponse(tmplt.render())
 
 def picker(req):
     if req.method == "POST":
@@ -184,7 +184,8 @@ def picker(req):
         return HttpResponse("<html><h2><center>An email should arrive shortly.</html>") #HttpResponseRedirect("/survey/pick/")
     else:
         form = PickerForm()
-        ctx = {"form": form}
+        pick = Pick.objects.order_by("changedatetime").reverse()
+        ctx = {"form": form, "hist": pick, }
         tmplt = loader.get_template("survey/picker.html")
 
     return HttpResponse(tmplt.render(ctx, req))

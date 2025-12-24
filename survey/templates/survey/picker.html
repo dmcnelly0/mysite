@@ -1,20 +1,42 @@
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=0.75">
 <head><title>Picker</title></head>
-<body style="background-color:300000">
-<font face="Tahoma" color=white>
 <style>
 blockquote {
     margin-left: 175;
 }
+
+.container div {
+  background-color: #300000;
+  margin: 2px;
+  padding: 2px;
+  font-size: 16px;
+  overflow: auto;
+}
 </style>
-<center><h3>Enter Item</h3></center>
-<blockquote>
-<form action="/survey/pick/" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" name="Pick" value="Submit">
-    <iframe src="/survey/plist/" name="pickerRpt" height="400" width="600" title="Picker Report"></iframe>
-</form>
+<body style="background-color:300000">
+<font face="Tahoma" color=white>
+
+<div class="container">
+   <div>
+      <center><h3>Enter Item</h3></center>
+      <form action="/survey/pick/" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" name="Pick" value="Submit">
+          <!--<iframe src="/survey/plist/" name="pickerRpt" height="400" width="600" title="Picker Report"></iframe>-->
+      </form>
+   </div>
+   <div>
+      {% if hist %}
+         {% for h in hist %}
+            {{ h }}
+            <br>
+         {% endfor %}
+      {% else %}
+          <p>No answers are available.</p>
+      {% endif %}
+   </div>
+</div>
 </body>
 </html>
