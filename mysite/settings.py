@@ -14,10 +14,16 @@ from pathlib import Path
 
 from . import utl
 
+import socket
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MEDIA_ROOT = '/usr/share/nginx/html/'
+hostname = socket.gethostname()
+if hostname == 'DESKTOP-E1L1G8G':
+   MEDIA_ROOT = '/Users/dsmcn/Documents/Prog/DougInst1/Image'
+else:
+   MEDIA_ROOT = '/usr/share/nginx/html/'
 
 MEDIA_URL = '/'
 
