@@ -20,7 +20,7 @@ import socket
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 hostname = socket.gethostname()
-if hostname == 'DESKTOP-E1L1G8G':
+if hostname[0:7] == 'DESKTOP':
    MEDIA_ROOT = '/Users/dsmcn/Documents/Prog/DougInst1/Image'
 else:
    MEDIA_ROOT = '/usr/share/nginx/html/'
