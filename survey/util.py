@@ -210,6 +210,7 @@ def saveData(item, webSite):
    filenm = ""
    #urls = []
    hits = 0
+   # Create text files containing data.
    if 0 < webSite.count("A"):
       filenm = "amazon.txt"
       fullUrl = AMZ_URL + item
