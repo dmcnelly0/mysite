@@ -1,0 +1,24 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=0.75">
+<head><title>Login</title></head>
+<body> <!--onload="return clearText()">-->
+<font face="Tahoma" color=0020c0>
+<center><h2>Login</h2>
+<blockquote>
+<form id="lgnForm" action="/survey/adm/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" name="store" value="Submit">
+</form>
+<!-- <script> -->
+<!-- function clearText() { -->
+   <!-- //let lForm = document.getElementById("lgnForm"); -->
+   <!-- //lForm.reset(); -->
+   <!-- document.getElementById("id_uname").value = ""; -->
+   <!-- //document.write("HELLO"); -->
+   <!-- return true; -->
+<!-- } -->
+<!-- </script> -->
+</center>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=0.75">
+<head><title>Choose</title></head>
+<body style="background-color:000030">
+<font face="Tahoma" color=white>
+<style>
+blockquote {
+    margin-left: 200;
+}
+h3 {
+    font-size: 1.25em;
+    font-weight: normal;
+}
+</style>
+<center><h2>Poll</h2></center>
+<blockquote>
+<form action="/survey/{{ quest_id }}/choice/" method="post">
+<h3>
+    {% csrf_token %}
+    {% for f in form %}
+        <br>
+        {{ f.label_tag }} {{ f }}
+    {% endfor %}
+    <input type="submit" name="choice" value="Submit">
+</h3>
+</form>
+</body>
+</html>

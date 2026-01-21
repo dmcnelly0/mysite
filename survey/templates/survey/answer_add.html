@@ -1,0 +1,41 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=0.75">
+<head><title>Take Survey</title></head>
+<style>
+body {
+  background-image: url('/survey/steeple.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+</style>
+<center><font color=000030>
+<h1>Survey
+<form action="/survey/answercls/" onsubmit="return validate()" method="post">
+    {% csrf_token %}
+    <table style=color:000030>
+    {% for f in form %}
+    <tr>
+       <td align="right">{{ f.label_tag }}</td><td align="left">{{ f }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+       <td></td><td><input type="submit" name="ans" value="Submit Answers" style="height:35px; width:150px"></td>
+    </tr>
+    </table>
+</form>
+<script>
+function validate() {
+   let rating = document.getElementById("id_church_rating");
+   let text = "Please rate what you thought of the service.";
+   //alert(text);
+   if ( rating.value == 0 ) {
+      //rating.focus();
+      alert(text);
+      return false;
+   }
+   return true;
+}
+</script>
+</body>
+</html>

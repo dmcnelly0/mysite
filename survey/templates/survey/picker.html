@@ -1,0 +1,56 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=0.75">
+<head><title>Picker</title></head>
+<style>
+body {
+  background-image: url('/survey/mainecoast.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  /* background-color: 450000; */
+  margin: 2px;
+  width:100%;
+}
+.container div {
+  /* background-color: black; */
+  max-height: 550px;
+  width: 47%;
+  margin: 15px;
+  padding: 1px;
+  overflow: auto;
+}
+</style>
+<!-- <body style="background-color:300000"> -->
+<font face="Tahoma" color=white>
+<center><h1>Picker</h1></center>
+
+<div class="container">
+   <!--<div style=background-color:450000>-->
+      <div>
+      <center><h3>Enter Item</h3></center>
+      <form action="/survey/pick/" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" name="Pick" value="Submit">
+          <!--<iframe src="/survey/plist/" name="pickerRpt" height="400" width="600" title="Picker Report"></iframe>-->
+      </form>
+   </div>
+   <div style=background-color:fff3f3>
+   <font color=300000>
+      <center><h3>Picker History</h3></center>
+      {% if hist %}
+         {% for h in hist %}
+            {{ h.item }}
+            <br>
+         {% endfor %}
+      {% else %}
+          <p>No answers are available.</p>
+      {% endif %}
+   </div>
+</div>
+</body>
+</html>
