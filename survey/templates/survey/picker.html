@@ -9,8 +9,10 @@ body {
   background-size: 100% 100%;
 }
 .container {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 65% 35%;
+  /* display: flex; */
+  /* flex-direction: row; */
   /* background-color: 450000; */
   margin: 2px;
   width:100%;
@@ -18,8 +20,8 @@ body {
 .container div {
   /* background-color: black; */
   max-height: 550px;
-  width: 47%;
-  margin: 15px;
+  width: 95%;
+  margin: 5px;
   padding: 1px;
   overflow: auto;
 }
@@ -35,6 +37,7 @@ body {
       <form action="/survey/pick/" method="post">
           {% csrf_token %}
           {{ form.as_p }}
+          
           <input type="submit" name="Pick" value="Submit">
           <!--<iframe src="/survey/plist/" name="pickerRpt" height="400" width="600" title="Picker Report"></iframe>-->
       </form>

@@ -165,6 +165,7 @@ def pList(req):
 
 def picker(req):
     if req.method == "POST":
+        res = ""
         pst = req.POST
         form = PickerForm(pst)
         print("Valid:", form.is_valid())
@@ -176,12 +177,15 @@ def picker(req):
             print("autorun:", autorun, type(autorun))
             if autorun:
                Pick.objects.filter(active = True).update(active = False)
+               res = "The results of your query should arrive after next automatic run."
+            else:
+               res = "An email should arrive shortly."
             p = Pick(wsite_cd = wsite, item = item, active = autorun)
             p.save()
             if not autorun:
                print("autorun:", autorun)
                runFind(item, wsite, None)
-        return HttpResponse("<html><h2><center>An email should arrive shortly.</html>") #HttpResponseRedirect("/survey/pick/")
+        return HttpResponse("<html><h2><center>" + res + "</html>")
     else:
         form = PickerForm()
         pick = Pick.objects.order_by("changedatetime").reverse()
