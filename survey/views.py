@@ -193,3 +193,11 @@ def picker(req):
         tmplt = loader.get_template("survey/picker.html")
 
     return HttpResponse(tmplt.render(ctx, req))
+
+def helpPicker(req):
+    if req.method == "POST":
+        print("Oops .. somehow POST method was called")
+    else:
+        tmplt = loader.get_template("survey/help_picker.html")
+        
+    return HttpResponse(tmplt.render())

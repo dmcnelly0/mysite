@@ -10,7 +10,7 @@ body {
 }
 .container {
   display: grid;
-  grid-template-columns: 65% 35%;
+  grid-template-columns: 70% 20%;
   /* display: flex; */
   /* flex-direction: row; */
   /* background-color: 450000; */
@@ -27,23 +27,28 @@ body {
 }
 </style>
 <!-- <body style="background-color:300000"> -->
-<font face="Tahoma" color=white>
+<font face="Tahoma" color=#806565>
 <center><h1>Picker</h1></center>
 
+<div align=right>
+<a href="#" onclick="return openHelp()">Help
+</div>
+<hr style=height:5px;border-width:3px;border-color:black;background-color:#806565>
+
+<font face="Tahoma" color=white>
 <div class="container">
    <!--<div style=background-color:450000>-->
-      <div>
+   <div>
       <center><h3>Enter Item</h3></center>
       <form action="/survey/pick/" method="post">
           {% csrf_token %}
           {{ form.as_p }}
-          
           <input type="submit" name="Pick" value="Submit">
           <!--<iframe src="/survey/plist/" name="pickerRpt" height="400" width="600" title="Picker Report"></iframe>-->
       </form>
    </div>
    <div style=background-color:fff3f3>
-   <font color=300000>
+   <font color=d0d0d0>
       <center><h3>Picker History</h3></center>
       {% if hist %}
          {% for h in hist %}
@@ -55,5 +60,12 @@ body {
       {% endif %}
    </div>
 </div>
+<script>
+function openHelp() {
+   let url_ = "{% url 'index' %}helppkr/"
+   window.open(url_, "myWin", "width=100, height=125, left=600, top=250");
+   return true;
+}
+</script>
 </body>
 </html>

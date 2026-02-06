@@ -18,4 +18,5 @@ urlpatterns = [
     path("upld/", views.uploadFile, name="uploadFile"),
     path("pick/", views.picker, name="Picker"),
     path("plist/", views.pList, name="Pick History"),
+    path("helppkr/", views.helpPicker, name="Help Picker"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
