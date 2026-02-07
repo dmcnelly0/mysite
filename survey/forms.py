@@ -46,4 +46,4 @@ class PickerForm(forms.Form):
         , widget = forms.CheckboxSelectMultiple
         , choices = WSITE )
     item = forms.CharField(label = "Item", max_length = 75)
-    autorun = forms.BooleanField(label = "Add to Automatic Run", required = False)
+    autorun = forms.BooleanField(label = "Add to Automatic Alert", required = False)
