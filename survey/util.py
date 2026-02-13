@@ -292,6 +292,7 @@ def flagIfItemWide(item, filenm):
          if hasAllWords(item, tx):
             hits += 1
             print(lnNum, hits, tx)
+            # Display hyperling of the source after text.
             fullUrl = url + tx.rstrip("\" />'").replace(" ", "+")
             msgTx += str(hits) + "-  " + tx + "  " + fullUrl + "\n"
    fRead.close()
