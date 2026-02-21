@@ -158,9 +158,9 @@ def sendEmail(msgText, eml):
    except Exception as x:
       print("Error:", x, "Check point:", ckpt)
 
-def runFind(item, wsite, eml):
+def runFind(item, wsite, eml, sim):
    saveData(item, wsite)
-   flagIfItem(item, wsite, eml)
+   flagIfItem(item, wsite, eml, sim)
 
 # def cronRun():
    # Get the latest active record.
@@ -233,7 +233,7 @@ def saveData(item, webSite):
       makeFile(filenm, fullUrl)
 
 # Overloaded to give option to create text file of web page or read text file and scrape.
-def flagIfItem(item, webSite, eml):
+def flagIfItem(item, webSite, eml, sim):
    ckpt = "3"
    print(webSite, ckpt)
    msgText = ""
@@ -246,10 +246,12 @@ def flagIfItem(item, webSite, eml):
    if 0 < webSite.count("T"):
       msgText += flagIfItemWide(item, "trailer.txt")
    #print(msgText)
-   # msgFl = open("msgText.txt", "w")
-   # msgFl.write(msgText)
-   # msgFl.close()
-   sendEmail(msgText, eml)
+   if sim:
+      msgFl = open("msgText.txt", "w")
+      msgFl.write(msgText)
+      msgFl.close()
+   else:
+      sendEmail(msgText, eml)
 
 def flagIfItemWide(item, filenm):
    if filenm == "ebay.txt":

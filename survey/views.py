@@ -182,9 +182,14 @@ def picker(req):
                res = "An email should arrive shortly."
             p = Pick(wsite_cd = wsite, item = item, active = autorun)
             p.save()
+            sim = form.cleaned_data.get("simulate")
+            # if sim:
+               # req.session["sim"] = "Y"
+            # else:
+               # req.session["sim"] = "N"
             if not autorun:
                print("autorun:", autorun)
-               runFind(item, wsite, None)
+               runFind(item, wsite, None, sim)
         return HttpResponse("<html><h2><center>" + res + "</html>")
     else:
         form = PickerForm()
