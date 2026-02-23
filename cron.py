@@ -79,7 +79,7 @@ def run_():
       fRan.write("Job ran- " + item)
       fRan.close()
       ckpt = "C3"
-      runFind(item, wsite_cd, emlDict)
+      runFind(item, wsite_cd, emlDict, False)
    except Exception as x:
       fWrite = open("CronErr.out", "w")
       fWrite.write("Error at " + ckpt + ": " + str(x) + "\n")

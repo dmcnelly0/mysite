@@ -139,6 +139,9 @@ def sendEmail(msgText, eml):
    ckpt = "U1"
    port = 465
    try:
+      # In the case where the app is directly executed on-line the eml variable
+      # will be empty because the email info is retrieved by getEmailInfo.
+      # Otherwise, the cron program supplies the email info.
       if eml == None:
          emlInfo = getEmailInfo()
       else:
@@ -246,6 +249,7 @@ def flagIfItem(item, webSite, eml, sim):
    if 0 < webSite.count("T"):
       msgText += flagIfItemWide(item, "trailer.txt")
    #print(msgText)
+   print("sim: ", sim)
    if sim:
       msgFl = open("msgText.txt", "w")
       msgFl.write(msgText)
