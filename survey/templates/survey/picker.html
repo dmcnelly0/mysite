@@ -65,10 +65,10 @@ a:active {
    <div>
       <center><h3>Enter Item</h3></center>
       <form action="/survey/pick/" onsubmit="return validate()" method="post">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <input type="submit" name="Pick" value="Submit">
-          <!--<iframe src="/survey/plist/" name="pickerRpt" height="400" width="600" title="Picker Report"></iframe>-->
+         {% csrf_token %}
+         {{ form.as_p }}
+         <input type="submit" name="Pick" value="Submit"
+            style="height:30px; width:125px; font-size:16">
       </form>
    </div>
    <div style=background-color:fff3f3>
@@ -87,7 +87,7 @@ a:active {
 <script>
 function openHelp() {
    let url_ = "{% url 'index' %}helppkr/"
-   window.open(url_, "myWin", "width=300, height=275, left=700, top=270");
+   window.open(url_, "myWin", "width=300, height=325, left=700, top=270");
    return true;
 }
 function validate() {
