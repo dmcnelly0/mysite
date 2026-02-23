@@ -43,6 +43,7 @@ class PickerForm(forms.Form):
     #website = forms.ChoiceField(label = "Website", widget = forms.RadioSelect, choices = WSITE )
     website = forms.MultipleChoiceField(
         label = "Website"
+        , required = True
         , widget = forms.CheckboxSelectMultiple
         , choices = WSITE )
     item = forms.CharField(label = "Item", max_length = 75)

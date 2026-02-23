@@ -64,7 +64,7 @@ a:active {
    <!--<div style=background-color:450000>-->
    <div>
       <center><h3>Enter Item</h3></center>
-      <form action="/survey/pick/" method="post">
+      <form action="/survey/pick/" onsubmit="return validate()" method="post">
           {% csrf_token %}
           {{ form.as_p }}
           <input type="submit" name="Pick" value="Submit">
@@ -88,6 +88,23 @@ a:active {
 function openHelp() {
    let url_ = "{% url 'index' %}helppkr/"
    window.open(url_, "myWin", "width=300, height=275, left=700, top=270");
+   return true;
+}
+function validate() {
+   let elColl = document.forms[0].elements;
+   let hit = false;
+   for ( el of elColl ) {
+      if ( el.id.substr(0, 10) == "id_website" && el.checked ) {
+         hit = true;
+         break;
+      }
+   }
+   if ( !hit ) {
+      let text = "Must choose at least one Website.";
+      alert(text);
+      return false;
+   }
+
    return true;
 }
 </script>
