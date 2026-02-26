@@ -178,16 +178,14 @@ def picker(req):
             if autorun:
                Pick.objects.filter(active = True).update(active = False)
                res = "The results of your query should arrive after next automatic run."
-            else:
-               res = "An email should arrive shortly."
             p = Pick(wsite_cd = wsite, item = item, active = autorun)
             p.save()
             sim = form.cleaned_data.get("simulate")
-            # if sim:
-               # req.session["sim"] = "Y"
-            # else:
-               # req.session["sim"] = "N"
             if not autorun:
+               if sim:
+                  res = "An email will NOT arrive because you chose Simulate Mode."
+               else:
+                  res = "An email should arrive shortly."
                print("autorun:", autorun)
                runFind(item, wsite, None, sim)
         return HttpResponse("<html><h2><center>" + res + "</html>")
