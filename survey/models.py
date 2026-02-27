@@ -57,5 +57,10 @@ class Pick(models.Model):
     changedatetime = models.DateTimeField(default = timezone.now)
     item = models.CharField(max_length = 75)
     active = models.BooleanField(default = False)
+    def isAutoRun(self, actv):
+        if actv:
+            return "autorun"
+        else:
+            return ""
     def __str__(self):
-        return self.wsite_cd + " " + self.item + " " + str(self.changedatetime) + " " + str(self.active)
+        return self.item + " " + self.wsite_cd + " " + self.isAutoRun(self.active) #+ " " + str(self.changedatetime)

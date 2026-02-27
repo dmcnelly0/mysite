@@ -10,7 +10,7 @@ body {
 }
 .container {
   display: grid;
-  grid-template-columns: 70% 20%;
+  grid-template-columns: 65% 25%;
   /* display: flex; */
   /* flex-direction: row; */
   /* background-color: 450000; */
@@ -19,7 +19,7 @@ body {
 }
 .container div {
   /* background-color: black; */
-  max-height: 550px;
+  max-height: 450px;
   width: 95%;
   margin: 5px;
   padding: 1px;
@@ -44,6 +44,10 @@ a:hover {
 /* selected link */
 a:active {
   color: green;
+}
+
+label[for="id_simulate"] {
+    color: 907050;
 }
 </style>
 
@@ -76,7 +80,7 @@ a:active {
       <center><h3>Picker History</h3></center>
       {% if hist %}
          {% for h in hist %}
-            {{ h.item }}
+            {{ h }}
             <br>
          {% endfor %}
       {% else %}

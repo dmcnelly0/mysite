@@ -48,4 +48,5 @@ class PickerForm(forms.Form):
         , choices = WSITE )
     item = forms.CharField(label = "Item", max_length = 75)
     autorun = forms.BooleanField(label = "Add to Automatic Alert", required = False)
-    simulate = forms.BooleanField(label = "Simulate Mode", required = False)
+    simulate = forms.BooleanField(label = "Simulate Mode", required = False
+        , widget = forms.CheckboxInput(attrs={'class': 'id_simulate'}) )
