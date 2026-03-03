@@ -20,6 +20,7 @@ def index(req):
     f.write("REMOTE_ADDR: " + str(req.META.get('REMOTE_ADDR')) + "\n")
     f.write("REMOTE_HOST: " + str(req.META.get('REMOTE_HOST')) + "\n")
     f.write("HTTP_REFERER: " + str(req.META.get('HTTP_REFERER')) + "\n")
+    f.write("USERNAME: " + str(req.META.get('USERNAME')) + "\n")
     f.close()
     #usr = models.User.objects.get(username="dmcnelly")
     #print("Authenticated:", usr.is_authenticated)
