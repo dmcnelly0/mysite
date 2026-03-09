@@ -132,7 +132,8 @@ TLR_URL = "https://bringatrailer.com/search/?s="
 
 from warnings import deprecated
 import requests
-from rapidfuzz import fuzz
+from openai import OpenAI
+#from rapidfuzz import fuzz
 #from survey.models import Pick
 
 def sendEmail(msgText, eml):
@@ -234,6 +235,8 @@ def saveData(item, webSite):
       filenm = "trailer.txt"
       fullUrl = TLR_URL + item
       makeFile(filenm, fullUrl)
+   if 0 < webSite.count("O"):
+      pass
 
 # Overloaded to give option to create text file of web page or read text file and scrape.
 def flagIfItem(item, webSite, eml, sim):
@@ -248,6 +251,8 @@ def flagIfItem(item, webSite, eml, sim):
       msgText += flagIfItemCraigs(item, "craigs.txt")
    if 0 < webSite.count("T"):
       msgText += flagIfItemWide(item, "trailer.txt")
+   if 0 < webSite.count("O"):
+      msgText += flagIfItemOAI(item)
    #print(msgText)
    print("sim: ", sim)
    if sim:
@@ -338,6 +343,18 @@ def flagIfItemCraigs(item, filenm):
    print("Hits:", hits)
    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
    print(head + msgTx)
+   return head + msgTx
+
+def flagIfItemOAI(item):
+   client = OpenAI()
+
+   response = client.responses.create(
+      model = "gpt-5.4",
+      input = "is " + item + " in the market"
+   )
+   head = "The results of your request regarding whether '" + item
+   head += "' is in the market yielded this from Open AI:\n\n"
+   msgTx = response.output_text
    return head + msgTx
 
 def hasAllWords(item, tx):

@@ -39,6 +39,7 @@ class PickerForm(forms.Form):
               "E": "Ebay",
               "C": "Craigslist",
               "T": "Bring a Trailer",
+              "O": "Open AI",
             }
     #website = forms.ChoiceField(label = "Website", widget = forms.RadioSelect, choices = WSITE )
     website = forms.MultipleChoiceField(
