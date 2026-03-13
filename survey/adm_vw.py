@@ -28,6 +28,10 @@ class LogIn(View):
             #except Exception as x:
             #    print("Error:", x, "Check point:", ckpt)
             if u is not None:
+                f = open("survey/meta.log", "w")
+                for r in req.META:
+                    f.write(r + ": " + str(req.META.get(r)) + "\n")
+                f.close()
                 print("Check point:", "6.7")
                 login(req, u)
                 #return HttpResponseRedirect("You got this hit.")
