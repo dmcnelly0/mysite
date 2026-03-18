@@ -132,7 +132,6 @@ TLR_URL = "https://bringatrailer.com/search/?s="
 
 from warnings import deprecated
 import requests
-from openai import OpenAI
 #from rapidfuzz import fuzz
 #from survey.models import Pick
 
@@ -240,8 +239,7 @@ def saveData(item, webSite):
 
 # Overloaded to give option to create text file of web page or read text file and scrape.
 def flagIfItem(item, webSite, eml, sim):
-   ckpt = "3"
-   print(webSite, ckpt)
+   print(webSite)
    msgText = ""
    if 0 < webSite.count("A"):
       pass
@@ -346,16 +344,32 @@ def flagIfItemCraigs(item, filenm):
    return head + msgTx
 
 def flagIfItemOAI(item):
-   client = OpenAI()
+   ckpt = "U2.0"
+   try:
+      import os
+      from dotenv import load_dotenv
+      from openai import OpenAI
+      load_dotenv()
+      ckpt = "u2.2"
+      #print(ckpt)
+      client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+      ckpt = "u2.4"
+      response = client.responses.create(
+         model = "gpt-5.4",
+         input = "is " + item + " in the market"
+      )
+      #print(ckpt, str(response))
+      ckpt = "u2.6"
+      head = "The results of your request regarding whether '" + item
+      head += "' is in the market yielded this from Open AI:\n\n"
+      ckpt = "u2.8"
+      msgTx = response.output_text
+      #print(ckpt, msgTx)
 
-   response = client.responses.create(
-      model = "gpt-5.4",
-      input = "is " + item + " in the market"
-   )
-   head = "The results of your request regarding whether '" + item
-   head += "' is in the market yielded this from Open AI:\n\n"
-   msgTx = response.output_text
-   return head + msgTx
+      return head + msgTx
+   except Exception as x:
+      #print("Error:", x, "Check point:", ckpt)
+      return "Error: " + str(x) + " at check point " + ckpt
 
 def hasAllWords(item, tx):
    wordList = item.split()
