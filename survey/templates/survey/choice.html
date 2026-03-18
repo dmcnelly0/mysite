@@ -14,7 +14,7 @@ h3 {
 </style>
 <center><h2>Poll</h2></center>
 <blockquote>
-<form action="/survey/{{ quest_id }}/choice/" method="post">
+<form action="{% url 'index' %}{{ quest_id }}/choice/" method="post">
 <h3>
     {% csrf_token %}
     {% for f in form %}

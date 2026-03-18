@@ -3,7 +3,7 @@
 <head><title>Add Choise</title></head>
 <body style="background-color:002000">
 <font face="Tahoma" color=white>
-<form action="/survey/addchoice/" onsubmit="return validate()" method="post">
+<form action="{% url 'index' %}addchoice/" onsubmit="return validate()" method="post">
 <h3>
     {% csrf_token %}
     {{ form }}

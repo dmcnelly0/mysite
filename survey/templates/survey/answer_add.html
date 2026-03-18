@@ -11,7 +11,7 @@ body {
 </style>
 <center><font color=000030>
 <h1>Church Survey</h1>
-<form action="/survey/answercls/" onsubmit="return validate()" method="post">
+<form action="{% url 'index' %}answercls/" onsubmit="return validate()" method="post">
     {% csrf_token %}
     <table style=color:000030>
     {% for f in form %}
