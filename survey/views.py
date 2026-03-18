@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 #from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 #import django.contrib.auth.models.User
 
 from .models import Answer, Question, Response, Pick
@@ -164,7 +165,8 @@ def pList(req):
     print("Check point:", ckpt)
     return HttpResponse(tmplt.render())
 
-def picker(req):
+@login_required
+def picker(req, unm):
     if req.method == "POST":
         res = ""
         pst = req.POST
@@ -193,7 +195,7 @@ def picker(req):
     else:
         form = PickerForm()
         pick = Pick.objects.order_by("changedatetime").reverse()
-        ctx = {"form": form, "hist": pick, }
+        ctx = {"form": form, "hist": pick, "uNm": unm}
         tmplt = loader.get_template("survey/picker.html")
 
     return HttpResponse(tmplt.render(ctx, req))

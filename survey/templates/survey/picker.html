@@ -68,7 +68,7 @@ label[for="id_simulate"] {
    <!--<div style=background-color:450000>-->
    <div>
       <center><h3>Enter Item</h3></center>
-      <form action="/survey/pick/" onsubmit="return validate()" method="post">
+      <form action="{% url 'index' %}{{ uNm }}/pick/" onsubmit="return validate()" method="post">
          {% csrf_token %}
          {{ form.as_p }}
          <input type="submit" name="Pick" value="Submit"

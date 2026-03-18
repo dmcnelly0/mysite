@@ -5,20 +5,11 @@
 <font face="Tahoma" color=0020c0>
 <center><h2>Login</h2>
 <blockquote>
-<form id="lgnForm" action="/survey/adm/" method="post">
+<form id="lgnForm" action="{% url 'index' %}{{ pgId }}/adm/" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" name="store" value="Submit">
 </form>
-<!-- <script> -->
-<!-- function clearText() { -->
-   <!-- //let lForm = document.getElementById("lgnForm"); -->
-   <!-- //lForm.reset(); -->
-   <!-- document.getElementById("id_uname").value = ""; -->
-   <!-- //document.write("HELLO"); -->
-   <!-- return true; -->
-<!-- } -->
-<!-- </script> -->
 </center>
 </body>
 </html>
