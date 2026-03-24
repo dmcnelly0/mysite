@@ -31,11 +31,11 @@ class LogIn(View):
                 #except Exception as x:
                 #    print("Error:", x, "Check point:", ckpt)
                 if u is not None:
-                    ckpt = "6.3"
-                    f = open("survey/meta.log", "w")
-                    for r in req.META:
-                        f.write(r + ": " + str(req.META.get(r)) + "\n")
-                    f.close()
+                    # ckpt = "6.3"
+                    # f = open("survey/meta.log", "w")
+                    # for r in req.META:
+                        # f.write(r + ": " + str(req.META.get(r)) + "\n")
+                    # f.close()
                     ckpt = "6.4"
                     login(req, u)
                     #return HttpResponseRedirect("You got this hit.")
@@ -46,7 +46,7 @@ class LogIn(View):
             if pageId == 0:
                 tmplt = loader.get_template("survey/adm.html")
                 return HttpResponse(tmplt.render(ctx, req))
-            if pageId == 1:
+            elif pageId == 1:
                 return HttpResponseRedirect("/survey/" + unm + "/pick/")
 
             ckpt = "6.6"
