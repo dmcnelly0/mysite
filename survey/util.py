@@ -16,101 +16,101 @@ def getRatingStr(num):
    return str
 
 def getConn():
-    return connections['default']
+   return connections['default']
 
 def getQuestionText(question_id):
-    with getConn().cursor() as cur:
-        q = "select question_text from survey_question where id = " + str(question_id)
-        cur.execute(q)
-        dat = cur.fetchall()
-        for item in dat:
-            itemStr = str(item).strip("(,)")
-    try:
-        questionText = itemStr
-    except UnboundLocalError as ulx:
-        return "No record found."
+   with getConn().cursor() as cur:
+      q = "select question_text from survey_question where id = " + str(question_id)
+      cur.execute(q)
+      dat = cur.fetchall()
+      for item in dat:
+         itemStr = str(item).strip("(,)")
+   try:
+      questionText = itemStr
+   except UnboundLocalError as ulx:
+      return "No record found."
 
-    return questionText
+   return questionText
 
 def getQuestions():
-    with getConn().cursor() as cur:
-        q = "select id, question_text from survey_question where demo_record = false order by question_text"
-        cur.execute(q)
-        dat = cur.fetchall()
-        # Add hint add head of list.
-        dat.insert(0, (-1, "<Pick question>"))
-    return dat
+   with getConn().cursor() as cur:
+      q = "select id, question_text from survey_question where demo_record = false order by question_text"
+      cur.execute(q)
+      dat = cur.fetchall()
+      # Add hint add head of list.
+      dat.insert(0, (-1, "<Pick question>"))
+   return dat
 
 def getChoices(quest_id):
-    with getConn().cursor() as cur:
-        q = "select id, choice_text from survey_choice where demo_record = false and question_id = " + str(quest_id)
-        cur.execute(q)
-        dat = cur.fetchall()
-    return dat
+   with getConn().cursor() as cur:
+      q = "select id, choice_text from survey_choice where demo_record = false and question_id = " + str(quest_id)
+      cur.execute(q)
+      dat = cur.fetchall()
+   return dat
 
 def getResponses():
-    with getConn().cursor() as cur:
-        q = "select r.name, q.question_text, c.choice_text, to_char(r.changedatetime, 'YYYY-fmMM-fmDD HH:MIam') change_time, r.demo_record"
-        q += " from survey_choice c right join survey_question q on c.question_id = q.id left join survey_response r on c.id = r.choice_id"
-        q += " where r.demo_record = false"
-        q += " order by r.changedatetime desc, c.changedatetime desc"
-        cur.execute(q)
-        dat = cur.fetchall()
-    return dat
+   with getConn().cursor() as cur:
+      q = "select r.name, q.question_text, c.choice_text, to_char(r.changedatetime, 'YYYY-fmMM-fmDD HH:MIam') change_time, r.demo_record"
+      q += " from survey_choice c right join survey_question q on c.question_id = q.id left join survey_response r on c.id = r.choice_id"
+      q += " where r.demo_record = false"
+      q += " order by r.changedatetime desc, c.changedatetime desc"
+      cur.execute(q)
+      dat = cur.fetchall()
+   return dat
 
 def getDoor():
-    with getConn().cursor() as cur:
-        q = "select name from survey_puzzle where cd = 'Door'"
-        cur.execute(q)
-        dat = cur.fetchall()
-    return dat[0][0]
+   with getConn().cursor() as cur:
+      q = "select name from survey_puzzle where cd = 'Door'"
+      cur.execute(q)
+      dat = cur.fetchall()
+   return dat[0][0]
 
 def convertDat(ls):
-    fnt = Fernet(getDoor())
-    dct = { }
-    pos1st = 0
-    pos2nd = 1
-    # Convert data and put it into a dictionary (hash map).
-    for i in range(0, len(ls)):
-        bin = fnt.decrypt(ls[i][pos2nd])
-        dct[ ls[i][pos1st] ] = bin.decode("utf-8")
-    return dct
+   fnt = Fernet(getDoor())
+   dct = { }
+   pos1st = 0
+   pos2nd = 1
+   # Convert data and put it into a dictionary (hash map).
+   for i in range(0, len(ls)):
+      bin = fnt.decrypt(ls[i][pos2nd])
+      dct[ ls[i][pos1st] ] = bin.decode("utf-8")
+   return dct
 
 def getEmailInfo():
-    with getConn().cursor() as cur:
-        q = "select cd, name from survey_puzzle where cd != 'Door'"
-        cur.execute(q)
-        dat = cur.fetchall()
-        emlDict = convertDat(dat)
-    return emlDict
+   with getConn().cursor() as cur:
+      q = "select cd, name from survey_puzzle where cd != 'Door'"
+      cur.execute(q)
+      dat = cur.fetchall()
+      emlDict = convertDat(dat)
+   return emlDict
 
 def runFlSsRpt():
-    FIRSTCOL = 0
-    FIFTHCOL = 4
-    head = "<html><body><h2><center>Store</center>"
-    sub = subprocess.run(["./store.sh"], shell=True)
-    print("Check point:", "50.0", "Shell script status:", sub)
-    fl = open("df.out", "r")
-    lin = []
-    rpt = "<br>"
-    #i = 0
-    firstRow = True
-    for ln in fl:
-        if firstRow == False:
-            col = re.split("\\s+", ln)
-            ss = col[FIRSTCOL]
-            u = col[FIFTHCOL]
-            rpt += ss + "&emsp;" + u + "<br>"
-            #lin.append(ln)
-            #i += 1
-            print(ln)
-        else:
-            print("Not showing column titles.")
-        firstRow = False
+   FIRSTCOL = 0
+   FIFTHCOL = 4
+   head = "<html><body><h2><center>Store</center>"
+   sub = subprocess.run(["./store.sh"], shell=True)
+   print("Check point:", "50.0", "Shell script status:", sub)
+   fl = open("df.out", "r")
+   lin = []
+   rpt = "<br>"
+   #i = 0
+   firstRow = True
+   for ln in fl:
+      if firstRow == False:
+         col = re.split("\\s+", ln)
+         ss = col[FIRSTCOL]
+         u = col[FIFTHCOL]
+         rpt += ss + "&emsp;" + u + "<br>"
+         #lin.append(ln)
+         #i += 1
+         print(ln)
+      else:
+         print("Not showing column titles.")
+      firstRow = False
 
-    foot = "</body></html>"
+   foot = "</body></html>"
 
-    return head + rpt + foot
+   return head + rpt + foot
  
 def runLogRpt():
    print("PENDING")
@@ -311,7 +311,8 @@ def flagIfItemWide(item, filenm):
    print("Hits:", hits)
    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
    print(head + msgTx)
-   return head + msgTx
+
+   return head + msgTx + "\n"
 
 def flagIfItemCraigs(item, filenm):
    fRead = open(filenm, "r")
@@ -341,7 +342,8 @@ def flagIfItemCraigs(item, filenm):
    print("Hits:", hits)
    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
    print(head + msgTx)
-   return head + msgTx
+
+   return head + msgTx + "\n"
 
 def flagIfItemOAI(item):
    ckpt = "U2.0"
@@ -366,7 +368,7 @@ def flagIfItemOAI(item):
       msgTx = response.output_text
       #print(ckpt, msgTx)
 
-      return head + msgTx
+      return head + msgTx + "\n"
    except Exception as x:
       #print("Error:", x, "Check point:", ckpt)
       return "Error: " + str(x) + " at check point " + ckpt
