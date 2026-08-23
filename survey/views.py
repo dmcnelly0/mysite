@@ -63,10 +63,21 @@ def list(req):
    return HttpResponse(tmplt.render(ctx))
 
 def pollHome(req):
-   print("Check point:", "1")
-   quest = Question.objects.all() #("question_text")
-   tmplt = loader.get_template("survey/poll_list.html")
-   ctx = { "quest": quest }
+   try:
+      print("Check point:", "1")
+      quest = Question.objects.all() #("question_text")
+      tmplt = loader.get_template("survey/poll_listd.html")
+      ctx = { "quest": quest }
+   except:
+      import traceback
+      f = open("Xpn.txt", "a")
+      print("Check point:", "1.22")
+      f.write(traceback.format_exc() + "\n")
+      print("Check point:", "1.24")
+      f.close()
+      print("Check point:", "1.26")
+      return HttpResponse("<html><h2><center>Oops, something went wrong.</html>")
+      print("Check point:", "1.28")
 
    return HttpResponse(tmplt.render(ctx))
 
