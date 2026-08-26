@@ -414,3 +414,9 @@ def getPosList(tx):
          break
 
    return posList
+
+def rptXpn(x):
+   f = open("Xpn.txt", "a")
+   f.write(x)
+   f.close()
+   print("Check point:", "U3.0")

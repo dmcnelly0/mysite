@@ -70,14 +70,9 @@ def pollHome(req):
       ctx = { "quest": quest }
    except:
       import traceback
-      f = open("Xpn.txt", "a")
-      print("Check point:", "1.22")
-      f.write(traceback.format_exc() + "\n")
-      print("Check point:", "1.24")
-      f.close()
-      print("Check point:", "1.26")
+      from .util import rptXpn
+      rptXpn(traceback.format_exc() + "\n")
       return HttpResponse("<html><h2><center>Oops, something went wrong.</html>")
-      print("Check point:", "1.28")
 
    return HttpResponse(tmplt.render(ctx))
 
