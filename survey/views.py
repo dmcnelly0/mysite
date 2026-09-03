@@ -10,7 +10,9 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Answer, Question, Response, Pick
 from .forms import AnswerForm, ChoiceForm, FileForm, PickerForm #, AddChoiceForm ChoiceFormAnlz1
-from .util import getChoices, getQuestionText, getResponses, runFind
+from .util import getChoices, getQuestionText, getResponses, runFind, rptXpn
+
+xpnTx = "<html><font color=red><h2><center>Oops, something went wrong.</html>"
 
 # Create your views here.
 
@@ -66,13 +68,11 @@ def pollHome(req):
    try:
       print("Check point:", "1")
       quest = Question.objects.all() #("question_text")
-      tmplt = loader.get_template("survey/poll_listd.html")
+      tmplt = loader.get_template("survey/poll_list.html")
       ctx = { "quest": quest }
    except:
-      import traceback
-      from .util import rptXpn
-      rptXpn(traceback.format_exc() + "\n")
-      return HttpResponse("<html><h2><center>Oops, something went wrong.</html>")
+      rptXpn()
+      return HttpResponse(xpnTx)
 
    return HttpResponse(tmplt.render(ctx))
 
@@ -95,6 +95,7 @@ def choice(req, question_id):
    else:
       ckpt = "2"
       try:
+         print("The man:", req.session.get("auth"))
          print("Check point:", ckpt)
          form = ChoiceForm() #ChoiceFormAnlz1()
          form.fields["choice_"].choices = getChoices(question_id)

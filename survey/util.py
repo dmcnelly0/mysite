@@ -415,8 +415,10 @@ def getPosList(tx):
 
    return posList
 
-def rptXpn(x):
+def rptXpn():
+   import traceback
+   from datetime import datetime
    f = open("Xpn.txt", "a")
-   f.write(x)
+   f.write(str(datetime.now()) + "- " + traceback.format_exc() + "\n")
    f.close()
    print("Check point:", "U3.0")
