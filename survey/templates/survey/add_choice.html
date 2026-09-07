@@ -10,6 +10,14 @@
     <input type="submit" name="AddChoice" value="Submit">
 </h3>
 </form>
+{% if choices %}
+   {% for c in choices %}
+      {{ c }} <a href="{% url 'index' %}{{ c.id }}/deactivatechoice/">Set Inactive</a>
+      <br>
+   {% endfor %}
+{% else %}
+   <p>NONE</p>
+{% endif %}
 <script>
 function validate() {
    let rating = document.getElementById("id_question");

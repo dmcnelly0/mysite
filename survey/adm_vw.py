@@ -44,6 +44,7 @@ class LogIn(View):
 
          ckpt = "6.5"
          if pageId == 0:
+            #req.session["auth"] = "T"
             tmplt = loader.get_template("survey/adm.html")
             return HttpResponse(tmplt.render(ctx, req))
          elif pageId == 1:
@@ -60,8 +61,9 @@ class AddChoice(LoginRequiredMixin, TemplateView):
    def get(self, req):
       form = AddChoiceForm()
       form.fields["question"].choices = getQuestions()
+      choices = Choice.objects.filter(demo_record = False).order_by("question")
       tmplt = loader.get_template("survey/add_choice.html")
-      ctx = { "form": form }
+      ctx = { "form": form, "choices": choices }
 
       return HttpResponse(tmplt.render(ctx, req))
 
@@ -80,6 +82,11 @@ class AddChoice(LoginRequiredMixin, TemplateView):
          print("Not a valid form.")
 
       return HttpResponseRedirect("/survey/addchoice/")
+
+def deactivateChoice(req, choice_id):
+   Choice.objects.filter(id = choice_id).update(demo_record = True)
+
+   return HttpResponse("choice_id: " + str(choice_id) + " is now inactive.")
 
 # def gotLog(req):
    #PENDING

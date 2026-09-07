@@ -95,7 +95,7 @@ def choice(req, question_id):
    else:
       ckpt = "2"
       try:
-         print("The man:", req.session.get("auth"))
+         #print("The man:", req.session.get("auth"))
          print("Check point:", ckpt)
          form = ChoiceForm() #ChoiceFormAnlz1()
          form.fields["choice_"].choices = getChoices(question_id)

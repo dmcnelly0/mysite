@@ -10,6 +10,7 @@ urlpatterns = [
    path("list/", views.list, name="listAnswers"),
    path("poll/", views.pollHome, name="pollHome"),
    path("addchoice/", adm_vw.AddChoice.as_view(), name="Add Choice"),
+   path("<int:choice_id>/deactivatechoice/", adm_vw.deactivateChoice, name="Deactivate Choice"),
    path("<int:question_id>/choice/", views.choice, name="Choice"),
    path("resp/", views.respRpt, name="RespRpt"),
    #path("choice/", views.choice, name="Choice"),
