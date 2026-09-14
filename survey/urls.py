@@ -5,6 +5,8 @@ from . import views, adm_vw, fil
 
 urlpatterns = [
    path("", views.index, name="index"),
+   # handle the root (/) URL:
+   path("/", views.index, name='home'),
    path("<int:pageId>/adm/", adm_vw.LogIn.as_view(), name="AdminView"),
    path("answercls/", views.AddAnswer.as_view(), name="AddAnswer"),
    path("list/", views.list, name="listAnswers"),
