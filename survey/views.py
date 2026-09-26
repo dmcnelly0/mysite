@@ -98,7 +98,9 @@ def choice(req, question_id):
          #print("The man:", req.session.get("auth"))
          print("Check point:", ckpt)
          form = ChoiceForm() #ChoiceFormAnlz1()
-         form.fields["choice_"].choices = getChoices(question_id)
+         chces = getChoices(question_id)
+         print("Choices:", chces)
+         form.fields["choice_"].choices = chces
          quest_text = getQuestionText(question_id)
          form.fields["choice_"].label = quest_text
          tmplt = loader.get_template("survey/choice.html")

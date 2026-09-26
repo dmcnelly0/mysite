@@ -43,7 +43,9 @@ def getQuestions():
 
 def getChoices(quest_id):
    with getConn().cursor() as cur:
-      q = "select id, choice_text from survey_choice where demo_record = false and question_id = " + str(quest_id)
+      #q = "select id, choice_text || ' {% url ""https://www.amazon.com/s?k=The Scarlet Letter"" %}' from survey_choice where demo_record = false and question_id = " + str(quest_id)
+      q = "select id, choice_text || ' <<a href=/https://www.amazon.com/s?k=<</a>' from survey_choice where demo_record = false and question_id = " + str(quest_id)
+      #q = "select id, choice_text from survey_choice where demo_record = false and question_id = " + str(quest_id)
       cur.execute(q)
       dat = cur.fetchall()
    return dat
