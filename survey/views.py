@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Answer, Question, Response, Pick
 from .forms import AnswerForm, ChoiceForm, FileForm, PickerForm #, AddChoiceForm ChoiceFormAnlz1
-from .util import getChoices, getQuestionText, getResponses, runFind, rptXpn
+from .util import getChoices, getQuestionText, getResponses, runFind, rptXpn, makeChoiceHtml
 
 xpnTx = "<html><font color=red><h2><center>Oops, something went wrong.</html>"
 
@@ -77,7 +77,8 @@ def pollHome(req):
    return HttpResponse(tmplt.render(ctx))
 
 def choice(req, question_id):
-   print("Check point:", "1.3", "req:", type(req))
+   print("Check point:", "1.3")#, "req:"), type(req))
+   #html = ""
    if req.method == "POST":
       pst = req.POST
       form = ChoiceForm(pst)
@@ -99,19 +100,22 @@ def choice(req, question_id):
          print("Check point:", ckpt)
          form = ChoiceForm() #ChoiceFormAnlz1()
          chces = getChoices(question_id)
+         print("Check point:", "2.2")
+         html = makeChoiceHtml(question_id, chces)
+         print("Check point:", "2.4", html)
          print("Choices:", chces)
-         form.fields["choice_"].choices = chces
+         #form.fields["choice_"].choices = chces
          quest_text = getQuestionText(question_id)
-         form.fields["choice_"].label = quest_text
-         tmplt = loader.get_template("survey/choice.html")
+         #form.fields["choice_"].label = quest_text
+         #tmplt = loader.get_template("survey/choice.html")
          ckpt = "3"
          print("Check point:", ckpt)
-         ctx = { "form": form, "quest_id": question_id } #, "quest_text": quest_text }
+         #ctx = { "form": form, "quest_id": question_id } #, "quest_text": quest_text }
       except Exception as x:
          print("Inner Error:", x, "Check point:", ckpt)
 
    print("Check point:", "4")
-   return HttpResponse(tmplt.render(ctx, req))
+   return HttpResponse(html)
 
 def uploadFile(req):
    if req.method == "POST":

@@ -118,6 +118,29 @@ def runLogRpt():
    print("PENDING")
    # sub = subprocess.run(["./ngxlog.sh"], shell=True)
 
+def makeChoiceHtml(quest_id, c):
+   print("quest_id:", quest_id)
+   head = "<html>\n"
+   head += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=0.75\">\n"
+   head += "<head><title>Choose</title></head>\n"
+   head += "<body style=\"background-color:000030\">\n"
+   head += "<font face=\"Tahoma\" color=white>\n"
+   head += "<style>\n"
+   head += "blockquote {\n"
+   head += "    margin-left: 200;\n"
+   head += "}\n"
+   head += "h3 {\n"
+   head += "   font-size: 1.25em;\n"
+   head += "   font-weight: normal;\n"
+   head += "}\n"
+   head += "</style>\n"
+   head += "<center><h2>Poll</h2></center>\n"
+   head += "<blockquote>\n"
+   head += "<form action=\"/survey/" + str(quest_id) + "/choice/\" method=\"post\">\n"
+   head += "<h3>\n"
+
+   return head
+
 #########################################################################################
 # Project Name: "Picker"
 
