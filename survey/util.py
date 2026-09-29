@@ -43,9 +43,7 @@ def getQuestions():
 
 def getChoices(quest_id):
    with getConn().cursor() as cur:
-      #q = "select id, choice_text || ' {% url ""https://www.amazon.com/s?k=The Scarlet Letter"" %}' from survey_choice where demo_record = false and question_id = " + str(quest_id)
-      q = "select id, choice_text || ' <<a href=/https://www.amazon.com/s?k=<</a>' from survey_choice where demo_record = false and question_id = " + str(quest_id)
-      #q = "select id, choice_text from survey_choice where demo_record = false and question_id = " + str(quest_id)
+      q = "select id, choice_text from survey_choice where demo_record = false and question_id = " + str(quest_id)
       cur.execute(q)
       dat = cur.fetchall()
    return dat
@@ -117,43 +115,6 @@ def runFlSsRpt():
 def runLogRpt():
    print("PENDING")
    # sub = subprocess.run(["./ngxlog.sh"], shell=True)
-
-# Incomplete
-def makeChoiceHtml(quest_id, c):
-   print("quest_id:", quest_id)
-   head = "<html>\n"
-   head += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=0.75\">\n"
-   head += "<head><title>Choose</title></head>\n"
-   head += "<body style=\"background-color:000030\">\n"
-   head += "<font face=\"Tahoma\" color=white>\n"
-   head += "<style>\n"
-   head += "blockquote {\n"
-   head += "    margin-left: 200;\n"
-   head += "}\n"
-   head += "h3 {\n"
-   head += "   font-size: 1.25em;\n"
-   head += "   font-weight: normal;\n"
-   head += "}\n"
-   head += "</style>\n"
-   head += "<center><h2>Poll</h2></center>\n"
-   head += "<blockquote>\n"
-   head += "<form action=\"/survey/" + str(quest_id) + "/choice/\" method=\"post\">\n"
-   head += "<h3>\n"
-   head += "<input type=\"hidden\" name=\"csrfmiddlewaretoken\" value=\"ugQzXmAX6FgBo8jeqydBSUKqWFleRTKoIeoNJJOtgtwTN2BJ1XuT1rBB2TDMW1Ok\">\n"
-   head += "    <br>\n"
-   head += "    <label for=\"id_name\">Your Name:</label> <input type=\"text\" name=\"name\" maxlength=\"80\" required id=\"id_name\">\n"
-   head += "    <br>\n"
-   head += "    <label>&#x27;Do you believe in Double Predestination (Y or N)?&#x27;:</label> <div id=\"id_choice_\"><div>\n"
-   head += "<label for=\"id_choice__0\"><input type=\"radio\" name=\"choice_\" value=\"79\" required id=\"id_choice__0\">\n"
-   head += "</div>\n"
-   head += "</div>\n"
-   head += "    <input type=\"submit\" name=\"choice\" value=\"Submit\">\n"
-   head += "</h3>\n"
-   head += "</form>\n"
-   head += "</body>\n"
-   head += "</html>\n"
-
-   return head
 
 #########################################################################################
 # Project Name: "Picker"

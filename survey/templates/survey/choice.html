@@ -1,9 +1,15 @@
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=0.75">
 <head><title>Choose</title></head>
-<body style="background-color:000030">
-<font face="Tahoma" color=white>
+<!--<body style="background-color:000030">-->
+<font face="Tahoma" color=603020>
 <style>
+body {
+  background-image: url('/survey/steeple.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
 blockquote {
     margin-left: 200;
 }
@@ -13,6 +19,7 @@ h3 {
 }
 </style>
 <center><h2>Poll</h2></center>
+<font color=301800>
 <blockquote>
 <form action="{% url 'index' %}{{ quest_id }}/choice/" method="post">
 <h3>
