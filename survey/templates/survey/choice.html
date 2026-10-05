@@ -26,7 +26,15 @@ h3 {
     {% csrf_token %}
     {% for f in form %}
         <br>
-        {{ f.label_tag }} {{ f }}
+        <!-- {{ forloop.counter }} -->
+        {% if forloop.counter == 2 %}
+            {{ f.label_tag }}
+            {% for rad in form.choice_ %}
+                {{ rad.label }}{{ rad.tag }}
+            {% endfor %}
+        {% else %}
+            {{ f.label_tag }} {{ f }}
+        {% endif %}
     {% endfor %}
     <input type="submit" name="choice" value="Submit">
 </h3>
