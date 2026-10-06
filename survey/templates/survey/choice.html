@@ -18,6 +18,7 @@ h3 {
     font-weight: normal;
 }
 </style>
+<body>
 <center><h2>Poll</h2></center>
 <font size=5 color=301800>
 <blockquote>
@@ -26,17 +27,19 @@ h3 {
     {% csrf_token %}
     {% for f in form %}
         <br>
-        <!-- {{ forloop.counter }} -->
         {% if forloop.counter == 2 %}
             {{ f.label_tag }}
+            <font size=5>
             {% for rad in form.choice_ %}
-                {{ rad.label }}{{ rad.tag }}
+            <br>
+            {{ rad.tag }} <a href="https://www.amazon.com/s?k={{ rad.choice_label }}" target="_blank">{{ rad.choice_label }}</a>
             {% endfor %}
         {% else %}
             {{ f.label_tag }} {{ f }}
         {% endif %}
     {% endfor %}
-    <input type="submit" name="choice" value="Submit">
+    <p>
+    <input type="submit" name="choice" value="Submit" style="height:35px; width:100px">
 </h3>
 </form>
 </body>

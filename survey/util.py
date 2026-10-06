@@ -43,7 +43,9 @@ def getQuestions():
 
 def getChoices(quest_id):
    with getConn().cursor() as cur:
-      q = "select id, choice_text from survey_choice where demo_record = false and question_id = " + str(quest_id)
+      q = "select id, choice_text from survey_choice"
+      q += " where demo_record = false and question_id = " + str(quest_id)
+      q += " order by id"
       cur.execute(q)
       dat = cur.fetchall()
    return dat
