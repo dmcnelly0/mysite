@@ -3,11 +3,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.contrib.auth import authenticate, login
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Choice
 from .forms import AuthForm, AddChoiceForm
-from .util import getQuestions, runLogRpt
+from .util import getQuestions, runLogRpt, getBookRank
 
 class LogIn(View):
    def get(self, req, pageId):
@@ -87,6 +88,15 @@ def deactivateChoice(req, choice_id):
    Choice.objects.filter(id = choice_id).update(demo_record = True)
 
    return HttpResponse("choice_id: " + str(choice_id) + " is now inactive.")
+
+@login_required
+def bookRankRpt(req):
+   bRank = getBookRank()
+   #print("ans type:", type(ans))
+   tmplt = loader.get_template("survey/bookrank.html")
+   ctx = { "bookrank": bRank, }
+
+   return HttpResponse(tmplt.render(ctx))
 
 # def gotLog(req):
    #PENDING

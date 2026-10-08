@@ -27,12 +27,12 @@ h3 {
     {% csrf_token %}
     {% for f in form %}
         <br>
-        {% if forloop.counter == 2 %}
+        {% if f.name == "choice_" %}
             {{ f.label_tag }}
             <font size=5>
             {% for rad in form.choice_ %}
-            <br>
-            {{ rad.tag }} <a href="https://www.amazon.com/s?k={{ rad.choice_label }}" target="_blank">{{ rad.choice_label }}</a>
+                <br>
+                {{ rad.tag }} <a href="https://www.amazon.com/s?k={{ rad.choice_label }}" target="_blank">{{ rad.choice_label }}</a>
             {% endfor %}
         {% else %}
             {{ f.label_tag }} {{ f }}
