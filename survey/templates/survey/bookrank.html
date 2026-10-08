@@ -1,0 +1,27 @@
+<html>
+<head><title>Book Choice Rankings</title></head>
+<style>
+table, th, td {
+   border: 2px solid #0020c0;
+}
+</style>
+<body>
+<font face="Tahoma" color=0020c0>
+<center><h3>Book Choice Rankings</h3></center>
+{% if bookrank %}
+    <table>
+    <tr><th>Choice</th><th>Head Count</th><th>Rank</th><th>Choosers</th></tr>
+   {% for r in bookrank %}
+      <tr>
+      {% for bit in r %}
+          <td>{{ bit }}</td>
+      {% endfor %}
+      </tr>
+   {% endfor %}
+    </table>
+{% else %}
+    <p>No book rankings are available.</p>
+{% endif %}
+</font>
+</body>
+</html>
