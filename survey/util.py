@@ -125,6 +125,14 @@ def runLogRpt():
    print("PENDING")
    # sub = subprocess.run(["./ngxlog.sh"], shell=True)
 
+def rptXpn():
+   import traceback
+   from datetime import datetime
+   f = open("Xpn.txt", "a")
+   f.write(str(datetime.now()) + "- " + traceback.format_exc() + "\n")
+   f.close()
+   print("Check point:", "U3.0")
+
 #########################################################################################
 # Project Name: "Picker"
 
@@ -423,11 +431,3 @@ def getPosList(tx):
          break
 
    return posList
-
-def rptXpn():
-   import traceback
-   from datetime import datetime
-   f = open("Xpn.txt", "a")
-   f.write(str(datetime.now()) + "- " + traceback.format_exc() + "\n")
-   f.close()
-   print("Check point:", "U3.0")

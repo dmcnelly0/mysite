@@ -79,18 +79,23 @@ def pollHome(req):
 def choice(req, question_id):
    print("Check point:", "1.3", "req:", type(req))
    if req.method == "POST":
-      pst = req.POST
-      form = ChoiceForm(pst)
-      form.fields["choice_"].choices = getChoices(question_id)
-      #print("Valid:", form.is_valid(), "form:", form)
-      if form.is_valid():
-         nm = pst.get("name")
-         chce = pst.get("choice_")
-         #print("Check point:", "5.1", "chce:", chce)
-         r = Response(name = nm, choice_id = chce, texta = "x", demo_record = False)
-         r.save()
-      else:
-         print("Check point:", "5.5", "Not a valid form.")
+      try:
+         #raise Exception("Oh oh")
+         pst = req.POST
+         form = ChoiceForm(pst)
+         form.fields["choice_"].choices = getChoices(question_id)
+         #print("Valid:", form.is_valid(), "form:", form)
+         if form.is_valid():
+            nm = pst.get("name")
+            chce = pst.get("choice_")
+            #print("Check point:", "5.1", "chce:", chce)
+            r = Response(name = nm, choice_id = chce, texta = "x", demo_record = False)
+            r.save()
+         else:
+            print("Check point:", "5.5", "Not a valid form.")
+      except:
+         rptXpn()
+         return HttpResponse(xpnTx)
       return HttpResponseRedirect("/survey/poll/")
    else:
       ckpt = "2"
