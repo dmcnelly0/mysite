@@ -62,7 +62,7 @@ def getResponses():
 
 def getBookRank():
    with getConn().cursor() as cur:
-      q = "select c.choice_text, count(*), dense_rank() over (order by count(*) desc), string_agg(r.name, ', ' order by r.name) from survey_response r join survey_choice c on ( r.choice_id = c.id ) where c.question_id = 1 group by c.choice_text"
+      q = "select c.choice_text, count(*), dense_rank() over (order by count(*) desc), string_agg(r.name, ', ' order by r.name) from survey_response r join survey_choice c on ( r.choice_id = c.id ) where c.question_id = 1 and r.demo_record = false group by c.choice_text"
       cur.execute(q)
       dat = cur.fetchall()
    return dat
