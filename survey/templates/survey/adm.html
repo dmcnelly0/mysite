@@ -3,7 +3,6 @@
 <head><title>Administrator</title></head>
 {% csrf_token %}
 <body><h3><center>
-<form>
    <!--UNDER CONSTRUCTION-->
    <a href="{% url 'index' %}{{ unm }}/store/">Store</a>
    <br>
@@ -13,17 +12,16 @@
       Book Choice Rankings</a>
       Show demo records<input type="checkbox" name="showdemo" value="D" id="id_showdemo" onclick="setShowDemo()">
    <p id="text" style="display:none">Checkbox is CHECKED!</p>
-</form>
 <script>
 function setShowDemo() {
    //var text = document.getElementById("text");
    //text.style.display = "block";
-   alert("HIT");
-   //print("HIT")
-   //let showDemo = document.getElementById("id_showdemo");
-   //let demoRef = document.getElementById("id_demoref");
-   //if ( showDemo.checked ) { demoRef.URL = "{% url 'index' %}1/brnk/" };
-   //return true;
+   //alert("HIT");
+   let showDemo = document.getElementById("id_showdemo");
+   let demoRef = document.getElementById("id_demoref");
+   alert(demoRef.location.href);
+   if ( showDemo.checked ) { demoRef.href = "{% url 'index' %}1/brnk/" };
+   return true;
 }
 </script>
 </body>
