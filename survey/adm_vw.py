@@ -90,7 +90,8 @@ def deactivateChoice(req, choice_id):
    return HttpResponse("choice_id: " + str(choice_id) + " is now inactive.")
 
 @login_required
-def bookRankRpt(req):
+def bookRankRpt(req, showDemo):
+   print("showDemo: ", showDemo)
    bRank = getBookRank()
    #print("ans type:", type(ans))
    tmplt = loader.get_template("survey/bookrank.html")
