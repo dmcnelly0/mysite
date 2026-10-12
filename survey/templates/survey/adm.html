@@ -8,22 +8,8 @@
    <br>
    <a href="{% url 'index' %}addchoice/">Add Question Choices</a>
    <br>
-   <a href="{% url 'index' %}0/brnk/" id="id_demoref onclick="return setShowDemo()">
-      Book Choice Rankings</a>
-      Show demo records<input type="checkbox" name="showdemo" value="D" id="id_showdemo" onclick="setShowDemo()">
-   <p id="text" style="display:none">Checkbox is CHECKED!</p>
-<script>
-function setShowDemo() {
-   //var text = document.getElementById("text");
-   //text.style.display = "block";
-   //alert("HIT");
-   let showDemo = document.getElementById("id_showdemo");
-   let demoRef = document.getElementById("id_demoref");
-   alert(demoRef.location.href);
-   if ( showDemo.checked ) { demoRef.href = "{% url 'index' %}1/brnk/" };
-   return true;
-}
-</script>
+   <a href="{% url 'index' %}0/brnk/" id="id_bookrankref">Book Choice Rankings</a>
+   &ensp;&ensp;<a href="{% url 'index' %}1/brnk/" id="id_demoref">with demo records</a>
 </body>
 
 </html>

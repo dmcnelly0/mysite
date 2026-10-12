@@ -91,8 +91,8 @@ def deactivateChoice(req, choice_id):
 
 @login_required
 def bookRankRpt(req, showDemo):
-   print("showDemo: ", showDemo)
-   bRank = getBookRank()
+   print("showDemo:", showDemo)
+   bRank = getBookRank(showDemo)
    #print("ans type:", type(ans))
    tmplt = loader.get_template("survey/bookrank.html")
    ctx = { "bookrank": bRank, }
