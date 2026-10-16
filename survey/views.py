@@ -102,6 +102,7 @@ def choice(req, question_id):
       try:
          #print("The man:", req.session.get("auth"))
          print("Check point:", ckpt)
+         SEARCH_URL = "https://www.amazon.com/s?k="
          form = ChoiceForm() #ChoiceFormAnlz1()
          form.fields["choice_"].choices = getChoices(question_id)
          quest_text = getQuestionText(question_id)
@@ -109,7 +110,9 @@ def choice(req, question_id):
          tmplt = loader.get_template("survey/choice.html")
          ckpt = "3"
          print("Check point:", ckpt)
-         ctx = { "form": form, "quest_id": question_id } #, "quest_text": quest_text }
+         ctx = { "form": form
+               , "quest_id": question_id
+               , "schURL": SEARCH_URL }
       except Exception as x:
          print("Inner Error:", x, "Check point:", ckpt)
 
