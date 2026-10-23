@@ -18,7 +18,8 @@ class AnswerForm(forms.Form):
 
 class AddChoiceForm(forms.Form):
     question = forms.ChoiceField(label = "Pick question") #, choices = getQuestions() )
-    name = forms.CharField(label = "Choice Name", max_length = 200)
+    name = forms.CharField(label = "Choice Name", max_length = 200
+        , widget = forms.TextInput(attrs={"style": "width: 600px;"}) )
 
 class ChoiceForm(forms.Form):
     name = forms.CharField(label = "Your Name", max_length = 80)
