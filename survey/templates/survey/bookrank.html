@@ -13,8 +13,8 @@ table, th, td {
     <tr><th>Choice</th><th>Head Count</th><th>Rank</th><th>Choosers</th></tr>
    {% for r in bookrank %}
       <tr>
-      {% for bit in r %}
-          <td>{{ bit }}</td>
+      {% for cell in r %}
+          <td>{{ cell }}</td>
       {% endfor %}
       </tr>
    {% endfor %}
