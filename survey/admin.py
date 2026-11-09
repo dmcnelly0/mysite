@@ -8,9 +8,9 @@ class ChoiceInline(admin.StackedInline):
     model = Choice
     extra = 5
 
-class ResponseInline(admin.StackedInline):
-    model = Response
-    extra = 5
+# class ResponseInline(admin.StackedInline):
+    # model = Response
+    # extra = 5
 
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -23,11 +23,9 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = ["question_text"]
 
 class ResponseAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None, {"fields": ["choice", "name"]})
-    ]
-    inlines = [ResponseInline]
-    list_display = ["choice", "name"]
+    fields = ["choice", "name", "demo_record"]
+    # inlines = [ResponseInline]
+    # list_display = ["choice", "name"]
 
 
 admin.site.register(Question, QuestionAdmin)
